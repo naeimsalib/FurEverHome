@@ -22,8 +22,8 @@
       <a href="/">FurEverHome</a>
       <div class="nav-right">
         <% if (user) { %>
-        <a href="/unicorns/new">Your Pets</a>
-        <a href="/unicorns/new">⭐️</a>
+        <a href="/Pets">Your Pets</a>
+        <a href="/favorites">⭐️</a>
         <a href="/auth/sign-out">SIGN OUT</a>
         <span>Welcome <%= user.name %></span>
         <% } else { %> <% if (currentUrl === '/auth/sign-up') { %>
