@@ -15,11 +15,17 @@ nav,
 footer {
   background-color: lightblue;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around; /* Add space around the containers */
   align-items: center;
   padding: 2vmin;
   font-size: 2vh;
   color: lightslategray;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
 }
 
 .nav-right {
@@ -55,6 +61,17 @@ nav .button-link:hover {
   color: white;
 }
 
+nav .nav-link.border-light {
+  border: 1px solid rgb(170, 166, 166);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+nav .nav-link.border-light:hover {
+  background-color: lightslategray;
+  color: white;
+}
+
 nav span {
   font-size: 1.5vmin;
   font-size: 25px;
@@ -75,6 +92,14 @@ form {
   gap: 2vmin;
 }
 
+.form-inline{
+  display: flex;
+  padding-left: 10px;
+}
+
+.nav-item{
+  padding-left: 15px;
+}
 form * {
   font-size: 2vmin;
   padding: 1vmin;
