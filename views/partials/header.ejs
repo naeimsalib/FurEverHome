@@ -9,15 +9,12 @@
   <body>
     <nav>
       <a href="/">🏠</a>
-      <!-- Above renders whether signed in or not -->
-      <% if (user) { %>
-      <div>
+      <div class="nav-right">
+        <% if (user) { %>
         <a href="/unicorns/new">Your Pets</a>
-        <div>
-          <a href="/unicorns/new">⭐️</a>
-          <a href="/auth/sign-out">SIGN OUT</a>
-        </div>
-        <span><%= user.username %></span>
+        <a href="/unicorns/new">⭐️</a>
+        <a href="/auth/sign-out">SIGN OUT</a>
+        <span>Welcome <%= user.username %></span>
         <% } else { %>
         <a href="/auth/sign-up">SIGN UP</a>
         <a href="/auth/sign-in">SIGN IN</a>
@@ -26,3 +23,6 @@
     </nav>
     <main>
       <h1><%= title %></h1>
+    </main>
+  </body>
+</html>
