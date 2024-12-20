@@ -29,4 +29,50 @@ router.post('/', ensureSignedIn, async (req, res) => {
   }
 });
 
+// GET /pets/:id (show functionality) - show a single pet's profile
+router.get('/:id', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id).populate('owner');
+  if (!pet) {
+    return res.redirect('/pets');
+  }
+  res.render('pets/show', { title: 'Pet Profile', pet, user: req.user });
+});
+
+// GET /pets/:id/edit (edit functionality) - show form to edit a pet
+router.get('/:id/edit', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id);
+  if (!pet) {
+    return res.redirect('/pets');
+  }
+  res.render('pets/edit', { title: 'Edit Pet', pet });
+});
+
+// PUT /pets/:id (update functionality) - update a pet
+router.put('/:id', ensureSignedIn, async (req, res) => {
+  try {
+    const pet = await Pet.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.redirect(`/pets/${pet._id}`);
+  } catch (e) {
+    console.log(e);
+    res.render('pets/edit', {
+      title: 'Edit Pet',
+      error: e.message,
+      pet: req.body,
+    });
+  }
+});
+
+// DELETE /pets/:id (delete functionality) - delete a pet
+router.delete('/:id', ensureSignedIn, async (req, res) => {
+  try {
+    await Pet.findByIdAndDelete(req.params.id);
+    res.redirect('/pets');
+  } catch (e) {
+    console.log(e);
+    res.redirect('/pets');
+  }
+});
+
 module.exports = router;

@@ -1,0 +1,29 @@
+<%- include('../partials/header.ejs') %>
+
+<h1><%= pet.name %></h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <img src="<%= pet.imageurl %>" class="img-fluid" alt="<%= pet.name %>" />
+    </div>
+    <div class="col-md-6">
+      <p><strong>Type:</strong> <%= pet.type %></p>
+      <p><strong>Age:</strong> <%= pet.age %></p>
+      <p><strong>Vaccination:</strong> <%= pet.vaccination %></p>
+      <p><strong>Location:</strong> <%= pet.location %></p>
+      <p><strong>Owner:</strong> <%= pet.owner.name %></p>
+      <% if (user && (user._id.equals(pet.owner._id) || user.isAdmin)) { %>
+      <a href="/pets/<%= pet._id %>/edit" class="btn btn-warning">Edit</a>
+      <form
+        action="/pets/<%= pet._id %>?_method=DELETE"
+        method="POST"
+        style="display: inline"
+      >
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer.ejs') %>
