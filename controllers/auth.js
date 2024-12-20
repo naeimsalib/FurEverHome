@@ -8,7 +8,10 @@ const router = express.Router();
 
 // GET /auth/sign-up (see the sign-up form - new functionality for the users data resource)
 router.get('/sign-up', (req, res) => {
-  res.render('auth/sign-up.ejs', { title: 'Sign Up!' })
+  res.render('auth/sign-up.ejs', {
+    title: 'Sign Up!',
+    user: req.user,
+  });
 });
 
 // GET /auth/sign-out
@@ -20,7 +23,8 @@ router.get('/sign-out', (req, res) => {
 // POST /auth/sign-up (create a user)
 router.post('/sign-up', async (req, res) => {
   try {
-    if (req.body.password !== req.body.confirmPassword) throw new Error('Passwords do not match');
+    if (req.body.password !== req.body.confirmPassword)
+      throw new Error('Passwords do not match');
     req.body.password = bcrypt.hashSync(req.body.password, 6);
     const user = await User.create(req.body);
     req.session.user_id = user._id;
@@ -34,7 +38,10 @@ router.post('/sign-up', async (req, res) => {
 
 // GET /auth/sign-in (show the sign-in page)
 router.get('/sign-in', (req, res) => {
-  res.render('auth/sign-in.ejs', { title: 'Sign In' });
+  res.render('auth/sign-in.ejs', {
+    title: 'Sign In',
+    user: req.user,
+  });
 });
 
 // POST /auth/sign-in (sign in a user)
@@ -50,9 +57,11 @@ router.post('/sign-in', async (req, res) => {
     res.redirect('/');
   } catch (e) {
     console.log(e);
-    res.render('auth/sign-in.ejs', { title: 'Sign In' });
+    res.render('auth/sign-in.ejs', {
+      title: 'Sign In',
+      user: req.user,
+    });
   }
 });
-
 
 module.exports = router;
