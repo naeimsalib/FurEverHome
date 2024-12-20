@@ -90,6 +90,7 @@ form {
   display: grid;
   grid-template-columns: auto auto;
   gap: 2vmin;
+
 }
 
 .form-inline{

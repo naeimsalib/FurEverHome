@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const Pet = require('./models/pet'); // Import the Pet model
 
 const app = express();
 
@@ -16,12 +17,10 @@ mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
-// Configure Express app
-// app.set(...)
+// Set the view engine to ejs
+app.set('view engine', 'ejs');
 
 // Mount Middleware
-// app.use(...)
-
 // Morgan for logging HTTP requests
 app.use(morgan('dev'));
 // Static middleware for returning static assets to the browser
@@ -51,8 +50,9 @@ app.use((req, res, next) => {
 // Routes
 
 // GET /  (home page functionality)
-app.get('/', (req, res) => {
-  res.render('home.ejs', { title: 'Home Page' });
+app.get('/', async (req, res) => {
+  const pets = await Pet.find().populate('owner');
+  res.render('home.ejs', { title: 'Home Page', pets });
 });
 
 // '/auth' is the "starts with" path that the request must match

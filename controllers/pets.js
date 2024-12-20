@@ -1,19 +1,32 @@
 const express = require('express');
 const router = express.Router();
-
-// Middleware to protect selected routes
+const Pet = require('../models/pet');
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 
-// All routes start with '/pets'
-
-// GET /pets (index functionality) UN-PROTECTED - all users can access
-router.get('/', (req, res) => {
-  res.render('pets/index.ejs', { title: 'Pets Page' });
+// GET /pets (index functionality) - show all pets
+router.get('/', async (req, res) => {
+  const pets = await Pet.find().populate('owner');
+  res.render('pets/index', { title: 'All Pets', pets });
 });
 
-// GET /pets/new (new functionality) PROTECTED - only signed in users can access
+// GET /pets/new (new functionality) - show form to add a new pet
 router.get('/new', ensureSignedIn, (req, res) => {
-  res.send('Add a Pet!');
+  res.render('pets/new', { title: 'Add a New Pet' });
+});
+
+// POST /pets (create functionality) - add a new pet
+router.post('/', ensureSignedIn, async (req, res) => {
+  try {
+    const pet = new Pet({
+      ...req.body,
+      owner: req.user._id,
+    });
+    await pet.save();
+    res.redirect('/pets');
+  } catch (e) {
+    console.log(e);
+    res.render('pets/new', { title: 'Add a New Pet', error: e.message });
+  }
 });
 
 module.exports = router;
