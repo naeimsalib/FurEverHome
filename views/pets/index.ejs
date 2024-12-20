@@ -1,4 +1,4 @@
-<%- include('../partials/header.ejs') %>
+<%- include('../partials/header.ejs') %> <% if (user) { %>
 <div class="container">
   <div class="row">
     <% pets.forEach(pet => { %>
@@ -22,5 +22,11 @@
     <% }) %>
   </div>
 </div>
-
-<%- include('../partials/footer.ejs') %>
+<% } else { %>
+<div class="container">
+  <div class="alert alert-warning" role="alert">
+    You need to <a href="/auth/sign-in" class="alert-link">sign in</a> to view
+    the pets.
+  </div>
+</div>
+<% } %> <%- include('../partials/footer.ejs') %>
