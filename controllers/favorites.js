@@ -8,7 +8,7 @@ const ensureSignedIn = require('../middleware/ensure-signed-in');
 
 // GET /pets (index functionality) UN-PROTECTED - all users can access
 router.get('/', (req, res) => {
-  res.send('All Favorite Pets are here!');
+  res.render('favorites/index.ejs', { title: 'Favorites Page' });
 });
 
 module.exports = router;
