@@ -3,18 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your App's Title</title>
+    <title>FurEverHome</title>
     <link rel="stylesheet" href="/css/main.css" />
   </head>
   <body>
     <nav>
       <a href="/">🏠</a>
+      <!-- Above renders whether signed in or not -->
+      <% if (user) { %>
       <div>
-        <a href="/unicorns">ALL UNICORNS</a>
-        <!-- Above renders whether signed in or not -->
-        <% if (user) { %>
-        <a href="/unicorns/new">ADD UNICORN</a>
-        <a href="/auth/sign-out">SIGN OUT</a>
+        <a href="/unicorns/new">Your Pets</a>
+        <div>
+          <a href="/unicorns/new">⭐️</a>
+          <a href="/auth/sign-out">SIGN OUT</a>
+        </div>
         <span><%= user.username %></span>
         <% } else { %>
         <a href="/auth/sign-up">SIGN UP</a>
@@ -24,4 +26,3 @@
     </nav>
     <main>
       <h1><%= title %></h1>
-
