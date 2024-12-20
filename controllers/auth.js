@@ -47,8 +47,8 @@ router.get('/sign-in', (req, res) => {
 // POST /auth/sign-in (sign in a user)
 router.post('/sign-in', async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
-    if (!user) throw new Error('Invalid username');
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) throw new Error('Invalid email');
     // Verify the password
     const valid = bcrypt.compareSync(req.body.password, user.password);
     if (!valid) throw new Error('Invalid password');
