@@ -8,7 +8,7 @@ router.get('/', ensureSignedIn, async (req, res) => {
   if (!req.user.isAdmin) {
     return res.redirect('/');
   }
-  const users = await User.find();
+  const users = await User.find({ _id: { $ne: req.user._id } });
   res.render('users/index', { title: 'All Users', users });
 });
 
