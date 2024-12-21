@@ -49,7 +49,7 @@ router.delete('/:id/comments/:commentId', ensureSignedIn, async (req, res) => {
     pet.owner.equals(req.user._id) ||
     req.user.isAdmin
   ) {
-    comment.remove();
+    pet.comments.pull(comment._id);
     await pet.save();
   }
   res.redirect(`/pets/${req.params.id}`);
