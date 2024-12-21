@@ -35,6 +35,40 @@
       <% } %>
     </div>
   </div>
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h2>Comments</h2>
+      <% pet.comments.forEach(comment => { %>
+      <div class="card mb-2">
+        <div class="card-body">
+          <p><%= comment.text %></p>
+          <p><small>By <%= comment.author.name %> on <%= comment.createdAt.toDateString() %></small></p>
+          <% if (user && (comment.author._id.equals(user._id) || pet.owner._id.equals(user._id) || user.isAdmin)) { %>
+          <form
+            action="/pets/<%= pet._id %>/comments/<%= comment._id %>?_method=DELETE"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+          </form>
+          <% } %>
+          <% if (user && comment.author._id.equals(user._id)) { %>
+          <a href="/pets/<%= pet._id %>/comments/<%= comment._id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+          <% } %>
+        </div>
+      </div>
+      <% }) %>
+      <% if (user) { %>
+      <form action="/pets/<%= pet._id %>/comments" method="POST">
+        <div class="form-group">
+          <label for="comment">Add a comment:</label>
+          <textarea class="form-control" id="comment" name="text" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+      </form>
+      <% } %>
+    </div>
+  </div>
 </div>
 
 <%- include('../partials/footer.ejs') %>

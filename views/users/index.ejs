@@ -1,0 +1,26 @@
+<%- include('../partials/header.ejs') %>
+
+<h1>All Users</h1>
+<div class="container">
+  <div class="row">
+    <% users.forEach(user => { %>
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><%= user.name %></h5>
+          <p><%= user.email %></p>
+          <form
+            action="/users/<%= user._id %>?_method=DELETE"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</div>
+
+<%- include('../partials/footer.ejs') %>

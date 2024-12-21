@@ -5,6 +5,7 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const Pet = require('./models/pet'); // Import the Pet model
+const User = require('./models/user'); // Import the User model
 
 const app = express();
 
@@ -67,6 +68,8 @@ app.use('/auth', require('./controllers/auth'));
 app.use('/pets', require('./controllers/pets'));
 
 app.use('/favorites', require('./controllers/favorites'));
+
+app.use('/users', require('./controllers/users'));
 
 // Any requests that get this far must have a signed in
 // user thanks to ensureSignedIn middleware

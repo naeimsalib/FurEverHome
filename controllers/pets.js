@@ -37,7 +37,9 @@ router.post('/', ensureSignedIn, async (req, res) => {
 
 // GET /pets/:id (show functionality) - show a single pet's profile
 router.get('/:id', ensureSignedIn, async (req, res) => {
-  const pet = await Pet.findById(req.params.id).populate('owner');
+  const pet = await Pet.findById(req.params.id)
+    .populate('owner')
+    .populate('comments.author');
   if (!pet) {
     return res.redirect('/pets');
   }
@@ -73,7 +75,10 @@ router.put('/:id', ensureSignedIn, async (req, res) => {
 // DELETE /pets/:id (delete functionality) - delete a pet
 router.delete('/:id', ensureSignedIn, async (req, res) => {
   try {
-    await Pet.findByIdAndDelete(req.params.id);
+    const pet = await Pet.findById(req.params.id);
+    if (req.user.isAdmin || pet.owner.equals(req.user._id)) {
+      await pet.remove();
+    }
     res.redirect('/pets');
   } catch (e) {
     console.log(e);

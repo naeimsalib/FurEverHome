@@ -1,16 +1,18 @@
-const User = require('../models/user'); // Adjust the path to your User model
+const User = require('../models/user');
 
-module.exports = async function (req, res, next) {
-  if (req.session && req.session.userId) {
-    try {
-      const user = await User.findById(req.session.userId);
-      if (user) {
+module.exports = (req, res, next) => {
+  if (req.session.userId) {
+    User.findById(req.session.userId)
+      .then((user) => {
         req.user = user;
         res.locals.user = user;
-      }
-    } catch (err) {
-      console.error(err);
-    }
+        next();
+      })
+      .catch((err) => {
+        console.error(err);
+        next();
+      });
+  } else {
+    next();
   }
-  next();
 };
