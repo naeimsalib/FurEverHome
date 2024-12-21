@@ -6,7 +6,7 @@ const ensureSignedIn = require('../middleware/ensure-signed-in');
 // GET /pets (index functionality) - show all pets
 router.get('/', ensureSignedIn, async (req, res) => {
   const pets = await Pet.find().populate('owner');
-  res.render('pets/index', { title: 'All Pets', pets });
+  res.render('pets/index', { title: 'Pets Available For Adoption', pets });
 });
 
 // GET /pets/new (new functionality) - show form to add a new pet
