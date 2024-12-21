@@ -51,8 +51,12 @@ app.use((req, res, next) => {
 
 // GET /  (home page functionality)
 app.get('/', async (req, res) => {
-  const pets = await Pet.find().populate('owner');
-  res.render('home.ejs', { title: 'Home Page', pets, user: req.user });
+  if (req.user) {
+    const pets = await Pet.find().populate('owner');
+    res.render('home.ejs', { title: 'Home Page', pets, user: req.user });
+  } else {
+    res.render('home.ejs', { title: 'Home Page', pets: [], user: req.user });
+  }
 });
 
 // '/auth' is the "starts with" path that the request must match

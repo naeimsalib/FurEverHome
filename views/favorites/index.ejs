@@ -1,8 +1,31 @@
 <%- include('../partials/header.ejs') %>
-
 <div class="container">
   <div class="row">
-    <!-- Add favorite pets display logic here -->
+    <% pets.forEach(pet => { %>
+    <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+        <a href="/pets/<%= pet._id %>">
+          <img
+            src="<%= pet.imageurl %>"
+            class="card-img-top"
+            alt="<%= pet.name %>"
+          />
+          <div class="card-body">
+            <h5 class="card-title"><%= pet.name %></h5>
+          </div>
+        </a>
+        <form
+          action="/favorites/<%= pet._id %>?_method=DELETE"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit" class="btn btn-danger">
+            Remove from Favorites
+          </button>
+        </form>
+      </div>
+    </div>
+    <% }) %>
   </div>
 </div>
 

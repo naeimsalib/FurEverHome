@@ -22,6 +22,17 @@
         <button type="submit" class="btn btn-danger">Delete</button>
       </form>
       <% } %>
+      <% if (user) { %>
+      <form
+        action="/favorites/<%= pet._id %>?_method=<%= user.favorites.includes(pet._id) ? 'DELETE' : 'POST' %>"
+        method="POST"
+        style="display: inline"
+      >
+        <button type="submit" class="btn btn-primary">
+          <%= user.favorites.includes(pet._id) ? '⭐️ Unfavorite' : '⭐️ Favorite' %>
+        </button>
+      </form>
+      <% } %>
     </div>
   </div>
 </div>

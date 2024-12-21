@@ -14,6 +14,12 @@ router.get('/new', ensureSignedIn, (req, res) => {
   res.render('pets/new', { title: 'Add a New Pet' });
 });
 
+// GET /yourPets (your pets functionality) - show pets created by the logged-in user
+router.get('/yourPets', ensureSignedIn, async (req, res) => {
+  const pets = await Pet.find({ owner: req.user._id }).populate('owner');
+  res.render('pets/yourPets', { title: 'Your Pets', pets });
+});
+
 // POST /pets (create functionality) - add a new pet
 router.post('/', ensureSignedIn, async (req, res) => {
   try {
