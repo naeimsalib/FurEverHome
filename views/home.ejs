@@ -20,6 +20,24 @@
     </div>
     <% }) %>
   </div>
+  <% } else { %>
+  <div class="text-center mb-5">
+    <h1>Welcome to FurEverHome</h1>
+    <p>
+      Your one-stop destination for adopting pets and finding them a forever
+      home. Browse through our collection of pets and find your new best friend
+      today!
+    </p>
+  </div>
+  <div class="row">
+    <% pets.forEach(pet => { %>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        <img src="<%= pet.imageurl %>" class="card-img-top" alt="Pet Image" />
+      </div>
+    </div>
+    <% }) %>
+  </div>
   <% } %>
 </div>
 

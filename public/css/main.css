@@ -13,7 +13,7 @@ body {
 
 nav,
 footer {
-  background-color: lightblue;
+  background-color: rgb(63, 66, 66);
   display: flex;
   justify-content: space-around; /* Add space around the containers */
   align-items: center;
@@ -177,4 +177,18 @@ button:hover {
   color: #343a40;
   background-color: #ffffff;
   border-color: #ffffff;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-center h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.text-center p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
 }
