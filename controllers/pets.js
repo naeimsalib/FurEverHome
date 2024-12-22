@@ -39,7 +39,13 @@ router.post('/', ensureSignedIn, async (req, res) => {
 router.get('/:id', ensureSignedIn, async (req, res) => {
   const pet = await Pet.findById(req.params.id)
     .populate('owner')
-    .populate('comments.author');
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'author',
+        model: 'User',
+      },
+    });
   if (!pet) {
     return res.redirect('/pets');
   }
@@ -58,11 +64,17 @@ router.get('/:id/edit', ensureSignedIn, async (req, res) => {
 // PUT /pets/:id (update functionality) - update a pet
 router.put('/:id', ensureSignedIn, async (req, res) => {
   try {
-    const pet = await Pet.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const pet = await Pet.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
     res.redirect(`/pets/${pet._id}`);
   } catch (e) {
     console.log(e);
-    res.render('pets/edit', { title: 'Edit Pet', error: e.message, pet: req.body });
+    res.render('pets/edit', {
+      title: 'Edit Pet',
+      error: e.message,
+      pet: req.body,
+    });
   }
 });
 
