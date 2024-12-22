@@ -2,7 +2,19 @@ const express = require('express');
 const router = express.Router();
 const Pet = require('../models/pet');
 const PetStory = require('../models/petStory');
+const Comment = require('../models/comment'); // Ensure Comment model is imported
 const ensureSignedIn = require('../middleware/ensure-signed-in');
+
+// GET /pets/new (new functionality) - show form to add a new pet
+router.get('/new', ensureSignedIn, (req, res) => {
+  res.render('pets/new', { title: 'Add a New Pet' });
+});
+
+// GET /pets/yourPets (your pets functionality) - show pets created by the logged-in user
+router.get('/yourPets', ensureSignedIn, async (req, res) => {
+  const pets = await Pet.find({ owner: req.user._id }).populate('owner');
+  res.render('pets/yourPets', { title: 'Your Pets', pets });
+});
 
 // GET /pets/:id (show functionality) - show a single pet's profile
 router.get('/:id', ensureSignedIn, async (req, res) => {

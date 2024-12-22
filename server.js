@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const Pet = require('./models/pet'); // Import the Pet model
 const User = require('./models/user'); // Import the User model
+const Comment = require('./models/comment'); // Ensure Comment model is imported
 
 const app = express();
 
