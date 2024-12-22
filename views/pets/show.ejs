@@ -5,8 +5,6 @@
   <div class="row">
     <div class="col-md-6">
       <img src="<%= pet.imageurl %>" class="img-fluid" alt="<%= pet.name %>" />
-    </div>
-    <div class="col-md-6">
       <p><strong>Type:</strong> <%= pet.type %></p>
       <p><strong>Breed:</strong> <%= pet.breed %></p>
       <p><strong>Age:</strong> <%= pet.age %></p>
@@ -33,6 +31,21 @@
         <button type="submit" class="btn btn-primary">
           <%= user.favorites.includes(pet._id) ? '⭐️ Unfavorite' : '⭐️ Favorite' %>
         </button>
+      </form>
+      <% } %>
+    </div>
+    <div class="col-md-6">
+      <% if (pet.story) { %>
+      <h2>Adoption Story</h2>
+      <p><%= pet.story.text %></p>
+      <% } else if (user && user._id.equals(pet.owner._id)) { %>
+      <h2>Add Adoption Story</h2>
+      <form action="/pets/<%= pet._id %>/story" method="POST">
+        <div class="form-group">
+          <label for="story">Story:</label>
+          <textarea class="form-control" id="story" name="text" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
       </form>
       <% } %>
     </div>
