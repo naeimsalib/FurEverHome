@@ -37,6 +37,10 @@ const petSchema = new Schema({
       ref: 'Comment',
     },
   ],
+  story: {
+    type: Schema.Types.ObjectId,
+    ref: 'PetStory',
+  },
 });
 
 module.exports = mongoose.model('Pet', petSchema);
