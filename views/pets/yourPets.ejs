@@ -1,15 +1,16 @@
 <%- include('../partials/header.ejs') %>
 
-<div class="container">
+<div class="container mt-5">
   <div class="row">
     <% pets.forEach(pet => { %>
-    <div class="col-md-4">
-      <div class="card mb-4 shadow-sm">
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
         <a href="/pets/<%= pet._id %>">
           <img
             src="<%= pet.imageurl %>"
             class="card-img-top"
             alt="<%= pet.name %>"
+            style="height: 200px; object-fit: contain;"
           />
           <div class="card-body">
             <h5 class="card-title"><%= pet.name %></h5>

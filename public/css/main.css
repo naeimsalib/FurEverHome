@@ -1,5 +1,125 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 body {
-  padding-top: 56px;
+  margin: 0;
+  padding-top: 56px; /* Adjust this value based on the height of your navbar */
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+nav,
+footer {
+  background-color: lightblue;
+  display: flex;
+  justify-content: space-around; /* Add space around the containers */
+  align-items: center;
+  padding: 2vmin;
+  font-size: 2vh;
+  color: lightslategray;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-right {
+  display: flex;
+  gap: 1.5vmin;
+}
+
+nav a {
+  text-decoration: none;
+  color: inherit; /* Inherit color from parent */
+}
+
+nav a h3 {
+  color: inherit; /* Inherit color from parent */
+  margin: 0;
+}
+
+nav a h3:hover {
+  color: gray; /* Change color on hover */
+}
+
+nav .button-link {
+  text-decoration: none;
+  color: slategray;
+  background-color: white;
+  padding: 1vmin;
+  border-radius: 1vmin;
+}
+
+nav .button-link:hover {
+  color: gray;
+  background-color: lightslategray;
+  color: white;
+}
+
+nav .nav-link.border-light {
+  border: 1px solid rgb(170, 166, 166);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+nav .nav-link.border-light:hover {
+  background-color: lightslategray;
+  color: white;
+}
+
+nav span {
+  font-size: 1.5vmin;
+  font-size: 25px;
+  padding-left: 15px;
+  padding-top: 7px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5vmin;
+}
+
+form {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 2vmin;
+}
+
+.form-inline {
+  display: flex;
+  padding-left: 10px;
+}
+
+.nav-item {
+  padding-left: 15px;
+}
+
+form * {
+  font-size: 2vmin;
+  padding: 1vmin;
+  border-radius: 1vmin;
+}
+
+input,
+textarea,
+select {
+  border: 0.3vmin solid black;
+}
+
+form button[type='submit'] {
+  grid-column: span 2;
+}
+
+button:hover {
+  background-color: lightslategray;
+  color: white;
 }
 
 .card {
