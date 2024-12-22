@@ -22,6 +22,10 @@ const petSchema = new Schema({
     type: String,
     required: true,
   },
+  breed: {
+    type: String,
+    required: true,
+  },
   type: {
     type: String,
     required: true,
@@ -30,7 +34,7 @@ const petSchema = new Schema({
     type: Number,
   },
   vaccination: {
-    type: Number,
+    type: String,
   },
   imageurl: {
     type: String,

@@ -1,5 +1,7 @@
-<%- include('./partials/header.ejs') %> <% if(user) { %>
+<%- include('./partials/header.ejs') %>
+
 <div class="container">
+  <% if (user) { %>
   <div class="row">
     <% pets.forEach(pet => { %>
     <div class="col-md-4">
@@ -18,5 +20,7 @@
     </div>
     <% }) %>
   </div>
+  <% } %>
 </div>
-<% } %> <%- include('./partials/footer.ejs') %>
+
+<%- include('./partials/footer.ejs') %>

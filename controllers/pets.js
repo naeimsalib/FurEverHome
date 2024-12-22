@@ -58,27 +58,18 @@ router.get('/:id/edit', ensureSignedIn, async (req, res) => {
 // PUT /pets/:id (update functionality) - update a pet
 router.put('/:id', ensureSignedIn, async (req, res) => {
   try {
-    const pet = await Pet.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const pet = await Pet.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.redirect(`/pets/${pet._id}`);
   } catch (e) {
     console.log(e);
-    res.render('pets/edit', {
-      title: 'Edit Pet',
-      error: e.message,
-      pet: req.body,
-    });
+    res.render('pets/edit', { title: 'Edit Pet', error: e.message, pet: req.body });
   }
 });
 
 // DELETE /pets/:id (delete functionality) - delete a pet
 router.delete('/:id', ensureSignedIn, async (req, res) => {
   try {
-    const pet = await Pet.findById(req.params.id);
-    if (req.user.isAdmin || pet.owner.equals(req.user._id)) {
-      await pet.remove();
-    }
+    await Pet.findByIdAndDelete(req.params.id);
     res.redirect('/pets');
   } catch (e) {
     console.log(e);

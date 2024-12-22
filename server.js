@@ -52,12 +52,24 @@ app.use((req, res, next) => {
 
 // GET /  (home page functionality)
 app.get('/', async (req, res) => {
+  if (!req.user) {
+    return res.render('home.ejs', {
+      title: 'Home Page',
+      pets: [],
+      user: req.user,
+    });
+  }
   let query = {};
   if (req.query.search) {
     query = { type: new RegExp(req.query.search, 'i') }; // Case-insensitive search
   }
   const pets = await Pet.find(query).populate('owner');
-  res.render('home.ejs', { title: 'Home Page', pets, user: req.user });
+  res.render('home.ejs', {
+    title: 'Home Page',
+    pets,
+    user: req.user,
+    search: req.query.search,
+  });
 });
 
 // '/auth' is the "starts with" path that the request must match
