@@ -28,12 +28,14 @@
           <div class="navbar-right">
             <ul class="navbar-nav ml-auto">
               <% if (user) { %>
-              <form class="form-inline mt-2 mt-md-0 mr-3">
+              <form class="form-inline mt-2 mt-md-0 mr-3" action="/" method="GET">
                 <input
                   class="form-control mr-sm-2"
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search by type"
                   aria-label="Search"
+                  name="search"
+                  value="<%= typeof search !== 'undefined' ? search : '' %>"
                 />
                 <button
                   class="btn btn-outline-success my-2 my-sm-0"

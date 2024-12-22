@@ -12,6 +12,7 @@
       <p><strong>Vaccination:</strong> <%= pet.vaccination %></p>
       <p><strong>Location:</strong> <%= pet.location %></p>
       <p><strong>Owner:</strong> <%= pet.owner.name %></p>
+      <p><strong>Owner's Email:</strong> <%= pet.owner.email %></p>
       <% if (user && (user._id.equals(pet.owner._id) || user.isAdmin)) { %>
       <a href="/pets/<%= pet._id %>/edit" class="btn btn-warning">Edit</a>
       <form
