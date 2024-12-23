@@ -22,12 +22,13 @@ body {
 
 nav,
 footer {
-  background-color: lightblue;
+  background-color: rgb(54, 56, 56);
   display: flex;
   justify-content: space-around;
   align-items: center;
   padding: 2vmin;
   font-size: 2vh;
+  border-radius:5px;
   color: lightslategray;
 }
 
