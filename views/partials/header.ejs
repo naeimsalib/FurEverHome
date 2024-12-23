@@ -27,7 +27,11 @@
           <div class="navbar-right">
             <ul class="navbar-nav ml-auto">
               <% if (user) { %>
-              <form class="form-inline mt-2 mt-md-0 mr-3" action="/" method="GET">
+              <form
+                class="form-inline mt-2 mt-md-0 mr-3"
+                action="/"
+                method="GET"
+              >
                 <input
                   class="form-control mr-sm-2"
                   type="text"
@@ -44,43 +48,53 @@
                 </button>
               </form>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/favorites">⭐️</a>
+                <a class="nav-link border-light" href="/favorites">⭐️ Fav</a>
               </li>
               <% if (currentUrl === '/pets/yourPets') { %>
-                <li class="nav-item">
-                  <a class="nav-link border-light" href="/pets/new">Add Pet</a>
-                </li>
+              <li class="nav-item">
+                <a class="nav-link border-light" href="/pets/new">Add Pet</a>
+              </li>
               <% } else { %>
-                <li class="nav-item">
-                  <a class="nav-link border-light" href="/pets/yourPets">Your Pets</a>
-                </li>
-              <% } %>
-              <% if (user.isAdmin) { %>
-                <li class="nav-item">
-                  <a class="nav-link border-light" href="/users">All Users</a>
-                </li>
+              <li class="nav-item">
+                <a class="nav-link border-light" href="/pets/yourPets"
+                  >Your Pets</a
+                >
+              </li>
+              <% } %> <% if (user.isAdmin) { %>
+              <li class="nav-item">
+                <a class="nav-link border-light" href="/users">All Users</a>
+              </li>
               <% } %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-out">SIGN OUT</a>
+                <a class="nav-link border-light" href="/auth/sign-out"
+                  >SIGN OUT</a
+                >
               </li>
               <li class="nav-item">
                 <span class="navbar-text">Welcome <%= user.name %></span>
               </li>
-              <% } else { %>
-              <% if (currentUrl === '/auth/sign-up') { %>
+              <% } else { %> <% if (currentUrl === '/auth/sign-up') { %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-in">SIGN IN</a>
+                <a class="nav-link border-light" href="/auth/sign-in"
+                  >SIGN IN</a
+                >
               </li>
               <% } else if (currentUrl === '/auth/sign-in') { %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-up">SIGN UP</a>
+                <a class="nav-link border-light" href="/auth/sign-up"
+                  >SIGN UP</a
+                >
               </li>
               <% } else { %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-up">SIGN UP</a>
+                <a class="nav-link border-light" href="/auth/sign-up"
+                  >SIGN UP</a
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-in">SIGN IN</a>
+                <a class="nav-link border-light" href="/auth/sign-in"
+                  >SIGN IN</a
+                >
               </li>
               <% } %> <% } %>
             </ul>
