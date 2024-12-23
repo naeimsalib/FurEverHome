@@ -1,9 +1,5 @@
-* {
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 body {
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding-top: 56px; /* Adjust this value based on the height of your navbar */
   height: 100vh;
