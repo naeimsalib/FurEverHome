@@ -1,17 +1,27 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+main {
+  background-color: #b2afaf;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
-  padding-top: 56px; /* Adjust this value based on the height of your navbar */
+  padding-top: 56px;
   height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  background-color: #9a9191;
 }
 
 nav,
 footer {
   background-color: lightblue;
   display: flex;
-  justify-content: space-around; /* Add space around the containers */
+  justify-content: space-around;
   align-items: center;
   padding: 2vmin;
   font-size: 2vh;
@@ -84,8 +94,8 @@ main {
 
 form {
   display: grid;
-  grid-template-columns: auto auto;
-  gap: 2vmin;
+  grid-template-columns: 1fr; /* Ensure single-column layout */
+  gap: 1vmin;
 }
 
 .form-inline {
@@ -110,7 +120,7 @@ select {
 }
 
 form button[type='submit'] {
-  grid-column: span 2;
+  grid-column: span 1; /* Ensure button spans the single column */
 }
 
 button:hover {
@@ -135,6 +145,7 @@ button:hover {
   object-fit: contain;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  background-color: #b2afaf;
 }
 
 .card-title {
@@ -202,6 +213,58 @@ button:hover {
 
 .flex-container .col-md-6:last-child {
   margin-right: 0;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 80vh;
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 400px;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-right: 3.5rem;
+  padding-left: 3.5rem;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  padding-top: 3rem;
+  background-color: #f9f9f9;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.auth-form button:hover {
+  background-color: #0056b3;
 }
 
 @media (max-width: 1440px) {
