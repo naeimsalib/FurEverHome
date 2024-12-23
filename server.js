@@ -53,16 +53,30 @@ app.use((req, res, next) => {
 
 // GET /  (home page functionality)
 app.get('/', async (req, res) => {
-  let pets;
-  if (req.query.query) {
-    const query = req.query.query;
-    const regex = new RegExp(query, 'i'); // Case-insensitive regex
-    pets = await Pet.find({
-      $or: [{ type: regex }, { breed: regex }],
-    }).populate('owner');
-  } else {
-    pets = await Pet.find().populate('owner');
+  let query = {};
+  if (req.query.vaccination) {
+    query.vaccination = { $ne: '' };
   }
+  if (req.query.ageMin || req.query.ageMax) {
+    query.age = {};
+    if (req.query.ageMin) {
+      query.age.$gte = parseInt(req.query.ageMin);
+    }
+    if (req.query.ageMax) {
+      query.age.$lte = parseInt(req.query.ageMax);
+    }
+  }
+  if (req.query.location) {
+    query.location = new RegExp(req.query.location, 'i');
+  }
+  if (req.query.breed) {
+    query.breed = new RegExp(req.query.breed, 'i');
+  }
+  if (req.query.type) {
+    query.type = new RegExp(req.query.type, 'i');
+  }
+
+  const pets = await Pet.find(query).populate('owner');
   res.render('home.ejs', { pets, user: req.user });
 });
 
