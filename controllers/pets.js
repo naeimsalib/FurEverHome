@@ -1,12 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const Pet = require('../models/pet');
-const PetStory = require('../models/petStory'); // Ensure PetStory model is imported
+const PetStory = require('../models/petStory');
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 
 // GET /pets/new (new functionality) - show form to add a new pet
 router.get('/new', ensureSignedIn, (req, res) => {
   res.render('pets/new', { title: 'Add a New Pet' });
+});
+
+// POST /pets - Add a new pet
+router.post('/', ensureSignedIn, async (req, res) => {
+  const pet = new Pet({
+    name: req.body.name,
+    breed: req.body.breed,
+    type: req.body.type,
+    age: req.body.age,
+    vaccination: req.body.vaccination,
+    imageurl: req.body.imageurl,
+    location: req.body.location,
+    owner: req.user._id,
+  });
+  await pet.save();
+  res.redirect(`/pets/${pet._id}`);
 });
 
 // GET /pets/yourPets (your pets functionality) - show pets created by the logged-in user
@@ -91,6 +107,17 @@ router.delete('/:id/story', ensureSignedIn, async (req, res) => {
   pet.story = null;
   await pet.save();
   res.redirect(`/pets/${req.params.id}`);
+});
+
+// DELETE /pets/:id - Delete a pet
+router.delete('/:id', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id);
+  if (!pet || (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)) {
+    return res.redirect('/pets');
+  }
+  await PetStory.findByIdAndDelete(pet.story);
+  await Pet.findByIdAndDelete(pet._id);
+  res.redirect('/pets/yourPets');
 });
 
 module.exports = router;
