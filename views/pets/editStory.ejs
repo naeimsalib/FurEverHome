@@ -1,0 +1,16 @@
+<%- include('../partials/header.ejs') %>
+
+<h1>Edit Adoption Story for <%= pet.name %></h1>
+<div class="container">
+  <form action="/pets/<%= pet._id %>/story?_method=PUT" method="POST">
+    <div class="form-group">
+      <label for="story">Story:</label>
+      <textarea class="form-control" id="story" name="text" rows="5" required>
+<%= pet.story.text %></textarea
+      >
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Update</button>
+  </form>
+</div>
+
+<%- include('../partials/footer.ejs') %>

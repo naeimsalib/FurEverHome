@@ -11,10 +11,6 @@ const petStorySchema = new Schema({
     ref: 'Pet',
     required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
 module.exports = mongoose.model('PetStory', petStorySchema);

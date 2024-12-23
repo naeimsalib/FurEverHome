@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Pet = require('../models/pet');
-const PetStory = require('../models/petStory');
+const PetStory = require('../models/petStory'); // Ensure PetStory model is imported
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 
 // GET /pets/new (new functionality) - show form to add a new pet
@@ -49,11 +49,48 @@ router.post('/:id/story', ensureSignedIn, async (req, res) => {
   res.redirect(`/pets/${req.params.id}`);
 });
 
-// GET /search - Search functionality
-router.get('/search', async (req, res) => {
-  const query = req.query.query;
-  const pets = await Pet.find({ $text: { $search: query } }).populate('owner');
-  res.render('home', { pets, user: req.user, query });
+// GET /pets/:id/story/edit - Show form to edit a pet story
+router.get('/:id/story/edit', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id).populate('story');
+  if (
+    !pet ||
+    !pet.story ||
+    (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)
+  ) {
+    return res.redirect(`/pets/${req.params.id}`);
+  }
+  res.render('pets/editStory', { title: 'Edit Pet Story', pet });
+});
+
+// PUT /pets/:id/story - Update a pet story
+router.put('/:id/story', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id).populate('story');
+  if (
+    !pet ||
+    !pet.story ||
+    (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)
+  ) {
+    return res.redirect(`/pets/${req.params.id}`);
+  }
+  pet.story.text = req.body.text;
+  await pet.story.save();
+  res.redirect(`/pets/${req.params.id}`);
+});
+
+// DELETE /pets/:id/story - Delete a pet story
+router.delete('/:id/story', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id);
+  if (
+    !pet ||
+    !pet.story ||
+    (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)
+  ) {
+    return res.redirect(`/pets/${req.params.id}`);
+  }
+  await PetStory.findByIdAndDelete(pet.story);
+  pet.story = null;
+  await pet.save();
+  res.redirect(`/pets/${req.params.id}`);
 });
 
 module.exports = router;

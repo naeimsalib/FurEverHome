@@ -38,6 +38,16 @@
       <% if (pet.story) { %>
       <h2>Adoption Story</h2>
       <p><%= pet.story.text %></p>
+      <% if (user && (user._id.equals(pet.owner._id) || user.isAdmin)) { %>
+      <a href="/pets/<%= pet._id %>/story/edit" class="btn btn-warning">Edit Story</a>
+      <form
+        action="/pets/<%= pet._id %>/story?_method=DELETE"
+        method="POST"
+        style="display: inline"
+      >
+        <button type="submit" class="btn btn-danger">Delete Story</button>
+      </form>
+      <% } %>
       <% } else if (user && user._id.equals(pet.owner._id)) { %>
       <h2>Add Adoption Story</h2>
       <form action="/pets/<%= pet._id %>/story" method="POST">
