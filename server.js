@@ -53,11 +53,16 @@ app.use((req, res, next) => {
 
 // GET /  (home page functionality)
 app.get('/', async (req, res) => {
-  if (!req.user) {
-    const pets = await Pet.aggregate([{ $sample: { size: 8 } }]); // Fetch 8 random pets
-    return res.render('home.ejs', { pets, user: req.user });
+  let pets;
+  if (req.query.query) {
+    const query = req.query.query;
+    const regex = new RegExp(query, 'i'); // Case-insensitive regex
+    pets = await Pet.find({
+      $or: [{ type: regex }, { breed: regex }],
+    }).populate('owner');
+  } else {
+    pets = await Pet.find().populate('owner');
   }
-  const pets = await Pet.find().populate('owner');
   res.render('home.ejs', { pets, user: req.user });
 });
 

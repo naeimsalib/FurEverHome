@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Pet = require('../models/pet');
 const PetStory = require('../models/petStory');
-const Comment = require('../models/comment'); // Ensure Comment model is imported
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 
 // GET /pets/new (new functionality) - show form to add a new pet
@@ -48,6 +47,13 @@ router.post('/:id/story', ensureSignedIn, async (req, res) => {
   pet.story = story._id;
   await pet.save();
   res.redirect(`/pets/${req.params.id}`);
+});
+
+// GET /search - Search functionality
+router.get('/search', async (req, res) => {
+  const query = req.query.query;
+  const pets = await Pet.find({ $text: { $search: query } }).populate('owner');
+  res.render('home', { pets, user: req.user, query });
 });
 
 module.exports = router;

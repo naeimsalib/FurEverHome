@@ -14,89 +14,80 @@
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
-          <div class="navbar-left">
-            <a class="navbar-brand" href="/">FurEverHome</a>
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="/">Home</a>
-              </li>
-            </ul>
-          </div>
-          <div class="navbar-right">
-            <ul class="navbar-nav ml-auto">
+          <a class="navbar-brand" href="/">FurEverHome</a>
+          <a class="nav-link" href="/">Home</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
               <% if (user) { %>
-              <form
-                class="form-inline mt-2 mt-md-0 mr-3"
-                action="/"
-                method="GET"
-              >
-                <input
-                  class="form-control mr-sm-2"
-                  type="text"
-                  placeholder="Search by type"
-                  aria-label="Search"
-                  name="search"
-                  value="<%= typeof search !== 'undefined' ? search : '' %>"
-                />
-                <button
-                  class="btn btn-outline-success my-2 my-sm-0"
-                  type="submit"
-                >
-                  Search
-                </button>
-              </form>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/favorites">⭐️ Fav</a>
+                <form class="d-flex" action="/" method="GET">
+                  <input
+                    class="form-control me-2"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                    name="query"
+                  />
+                  <button class="btn btn-outline-success" type="submit">
+                    Search
+                  </button>
+                </form>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/favorites">⭐️ Favorites</a>
               </li>
               <% if (currentUrl === '/pets/yourPets') { %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/pets/new">Add Pet</a>
+                <a class="nav-link" href="/pets/new">Add Pet</a>
               </li>
               <% } else { %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/pets/yourPets"
-                  >Your Pets</a
-                >
+                <a class="nav-link" href="/pets/yourPets">Your Pets</a>
               </li>
-              <% } %> <% if (user.isAdmin) { %>
+              <% } %>
+              <% if (user.isAdmin) { %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/users">All Users</a>
+                <a class="nav-link" href="/users">All Users</a>
               </li>
               <% } %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-out"
-                  >SIGN OUT</a
-                >
+                <a class="nav-link" href="/auth/sign-out">SIGN OUT</a>
               </li>
               <li class="nav-item">
                 <span class="navbar-text">Welcome <%= user.name %></span>
               </li>
-              <% } else { %> <% if (currentUrl === '/auth/sign-up') { %>
+              <% } else { %>
+              <% if (currentUrl === '/auth/sign-up') { %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-in"
-                  >SIGN IN</a
-                >
+                <a class="nav-link" href="/auth/sign-in">SIGN IN</a>
               </li>
               <% } else if (currentUrl === '/auth/sign-in') { %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-up"
-                  >SIGN UP</a
-                >
+                <a class="nav-link" href="/auth/sign-up">SIGN UP</a>
               </li>
               <% } else { %>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-up"
-                  >SIGN UP</a
-                >
+                <a class="nav-link" href="/auth/sign-up">SIGN UP</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link border-light" href="/auth/sign-in"
-                  >SIGN IN</a
-                >
+                <a class="nav-link" href="/auth/sign-in">SIGN IN</a>
               </li>
-              <% } %> <% } %>
+              <% } %>
+              <% } %>
             </ul>
           </div>
         </div>

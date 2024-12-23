@@ -207,3 +207,9 @@ button:hover {
 .flex-container .col-md-6:last-child {
   margin-right: 0;
 }
+
+@media (max-width: 1440px) {
+  .navbar-nav {
+    flex-direction: column;
+  }
+}
