@@ -32,6 +32,16 @@ footer {
   color: lightslategray;
 }
 
+.btn-container {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.mt-3 {
+  margin-top: 0.8rem;
+}
+
 .navbar-left,
 .navbar-right {
   display: flex;

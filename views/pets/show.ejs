@@ -34,25 +34,36 @@
       <p><strong>Owner:</strong> <%= pet.owner.name %></p>
       <p><strong>Owner's Email:</strong> <%= pet.owner.email %></p>
       <% if (user && (user._id.equals(pet.owner._id) || user.isAdmin)) { %>
-      <a href="/pets/<%= pet._id %>/edit" class="btn btn-warning">Edit</a>
-      <form
-        action="/pets/<%= pet._id %>?_method=DELETE"
-        method="POST"
-        style="display: inline"
-      >
-        <button type="submit" class="btn btn-danger">Delete</button>
-      </form>
-      <% } %>
-      <% if (user) { %>
-      <form
-        action="/favorites/<%= pet._id %>?_method=<%= user.favorites.includes(pet._id) ? 'DELETE' : 'POST' %>"
-        method="POST"
-        style="display: inline"
-      >
-        <button type="submit" class="btn btn-primary">
-          <%= user.favorites.includes(pet._id) ? '⭐️ Unfavorite' : '⭐️ Favorite' %>
-        </button>
-      </form>
+      <div class="btn-container mt-3">
+        <a href="/pets/<%= pet._id %>/edit" class="btn btn-warning">Edit</a>
+        <form
+          action="/pets/<%= pet._id %>?_method=DELETE"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+        <% if (user) { %>
+        <form
+          action="/favorites/<%= pet._id %>?_method=<%= user.favorites.includes(pet._id) ? 'DELETE' : 'POST' %>"
+          method="POST"
+          style="display: inline"
+        >
+          <button type="submit" class="btn btn-primary">
+            <%= user.favorites.includes(pet._id) ? '⭐️ Unfavorite' : '⭐️ Favorite' %>
+          </button>
+        </form>
+        <% } %>
+      </div>
+      <div class="mt-3">
+        <form action="/pets/<%= pet._id %>/images" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="images">Add Images:</label>
+            <input type="file" class="form-control" id="images" name="images" multiple>
+          </div>
+          <button type="submit" class="btn btn-primary mt-2">Upload</button>
+        </form>
+      </div>
       <% } %>
     </div>
     <div class="col-md-6">
