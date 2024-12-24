@@ -20,9 +20,7 @@ const petSchema = new Schema({
   vaccination: {
     type: String,
   },
-  imageurl: {
-    type: String,
-  },
+  imageUrls: [String], // Store multiple image URLs
   location: {
     type: String,
   },
