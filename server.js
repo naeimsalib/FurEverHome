@@ -4,6 +4,9 @@ const morgan = require('morgan');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const multer = require('multer'); // Import multer
+const path = require('path');
+const fs = require('fs'); // Import fs to handle file system operations
 const Pet = require('./models/pet'); // Import the Pet model
 const User = require('./models/user'); // Import the User model
 const Comment = require('./models/comment'); // Ensure Comment model is imported
@@ -49,6 +52,23 @@ app.use((req, res, next) => {
   next();
 });
 
+// Ensure the uploads directory exists
+const uploadsDir = path.join(__dirname, 'public/uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+const upload = multer({ storage });
+
 // Routes
 
 // GET /  (home page functionality)
@@ -67,13 +87,13 @@ app.get('/', async (req, res) => {
     }
   }
   if (req.query.location) {
-    query.location = new RegExp(req.query.location, 'i');
+    query.location = new RegExp(req.query.location, 'i'); // Case-insensitive regex
   }
   if (req.query.breed) {
-    query.breed = new RegExp(req.query.breed, 'i');
+    query.breed = new RegExp(req.query.breed, 'i'); // Case-insensitive regex
   }
   if (req.query.type) {
-    query.type = new RegExp(req.query.type, 'i');
+    query.type = new RegExp(req.query.type, 'i'); // Case-insensitive regex
   }
 
   const pets = await Pet.find(query).populate('owner');

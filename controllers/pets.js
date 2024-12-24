@@ -3,6 +3,20 @@ const router = express.Router();
 const Pet = require('../models/pet');
 const PetStory = require('../models/petStory');
 const ensureSignedIn = require('../middleware/ensure-signed-in');
+const multer = require('multer');
+const path = require('path');
+
+// Set up multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // GET /pets/new (new functionality) - show form to add a new pet
 router.get('/new', ensureSignedIn, (req, res) => {
@@ -10,20 +24,26 @@ router.get('/new', ensureSignedIn, (req, res) => {
 });
 
 // POST /pets - Add a new pet
-router.post('/', ensureSignedIn, async (req, res) => {
-  const pet = new Pet({
-    name: req.body.name,
-    breed: req.body.breed,
-    type: req.body.type,
-    age: req.body.age,
-    vaccination: req.body.vaccination,
-    imageurl: req.body.imageurl,
-    location: req.body.location,
-    owner: req.user._id,
-  });
-  await pet.save();
-  res.redirect(`/pets/${pet._id}`);
-});
+router.post(
+  '/',
+  ensureSignedIn,
+  upload.array('images', 10),
+  async (req, res) => {
+    const imageUrls = req.files.map((file) => `/uploads/${file.filename}`);
+    const pet = new Pet({
+      name: req.body.name,
+      breed: req.body.breed,
+      type: req.body.type,
+      age: req.body.age,
+      vaccination: req.body.vaccination,
+      imageUrls: imageUrls,
+      location: req.body.location,
+      owner: req.user._id,
+    });
+    await pet.save();
+    res.redirect(`/pets/${pet._id}`);
+  }
+);
 
 // GET /pets/yourPets (your pets functionality) - show pets created by the logged-in user
 router.get('/yourPets', ensureSignedIn, async (req, res) => {
