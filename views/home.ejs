@@ -81,7 +81,7 @@
       <div class="card h-100">
         <a href="/pets/<%= pet._id %>">
           <img
-            src="<%= pet.imageUrls[0] %>"
+            src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
             class="card-img-top"
             alt="<%= pet.name %>"
           />
@@ -104,7 +104,7 @@
       <div class="card h-100">
         <a href="/pets/<%= pet._id %>">
           <img
-            src="<%= pet.imageUrls[0] %>"
+            src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
             class="card-img-top"
             alt="<%= pet.name %>"
           />

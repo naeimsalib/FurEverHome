@@ -11,11 +11,17 @@
           <% }) %>
         </div>
         <div class="carousel-inner">
-          <% pet.imageUrls.forEach((url, index) => { %>
-          <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-            <img src="<%= url %>" class="d-block w-100" alt="...">
-          </div>
-          <% }) %>
+          <% if (pet.imageUrls.length > 0) { %>
+            <% pet.imageUrls.forEach((url, index) => { %>
+            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+              <img src="<%= url %>" class="d-block w-100" alt="...">
+            </div>
+            <% }) %>
+          <% } else { %>
+            <div class="carousel-item active">
+              <img src="/assets/no-image.png" class="d-block w-100" alt="No image available">
+            </div>
+          <% } %>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
