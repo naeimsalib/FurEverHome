@@ -1,6 +1,7 @@
 <%- include('./partials/header.ejs') %>
 
 <div class="container mt-5">
+  <% if (user) { %>
   <div class="d-flex justify-content-end mb-3">
     <div class="dropdown">
       <button
@@ -73,6 +74,7 @@
       </div>
     </div>
   </div>
+  <% } %>
 
   <% if (user) { %>
   <div class="row">
@@ -100,11 +102,12 @@
   </div>
   <div class="row">
     <% pets.forEach(pet => { %>
+    <% if (pet.imageUrls.length > 0) { %>
     <div class="col-md-3 mb-4">
       <div class="card h-100">
         <a href="/pets/<%= pet._id %>">
           <img
-            src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
+            src="<%= pet.imageUrls[0] %>"
             class="card-img-top"
             alt="<%= pet.name %>"
           />
@@ -114,6 +117,7 @@
         </a>
       </div>
     </div>
+    <% } %>
     <% }) %>
   </div>
   <% } %>

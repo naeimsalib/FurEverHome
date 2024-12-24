@@ -32,6 +32,22 @@ footer {
   color: lightslategray;
 }
 
+.carousel-inner img {
+  max-height: 400px; 
+  max-width: 100%; 
+  object-fit: contain; 
+  margin: 0 auto; 
+  border-radius: 25px;
+}
+
+.card-img-top {
+  max-height: 200px; 
+  max-width: 100%; 
+  object-fit: contain; 
+  margin: 0 auto; 
+  border-radius: 25px;
+}
+
 .btn-container {
   display: flex;
   gap: 7px;

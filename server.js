@@ -96,7 +96,19 @@ app.get('/', async (req, res) => {
     query.type = new RegExp(req.query.type, 'i'); // Case-insensitive regex
   }
 
-  const pets = await Pet.find(query).populate('owner');
+  let pets;
+  if (req.user) {
+    // User is logged in, show all pets
+    pets = await Pet.find(query).populate('owner');
+  } else {
+    // User is not logged in, show only pets with images and limit to 10 random pets
+    const petsWithImages = await Pet.find({
+      ...query,
+      imageUrls: { $exists: true, $ne: [] },
+    }).populate('owner');
+    pets = petsWithImages.sort(() => 0.5 - Math.random()).slice(0, 10);
+  }
+
   res.render('home.ejs', { pets, user: req.user });
 });
 
