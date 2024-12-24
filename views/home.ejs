@@ -52,11 +52,21 @@
           </div>
           <div class="form-group mb-3">
             <label for="breed">Breed:</label>
-            <input type="text" class="form-control" id="breed" name="breed" />
+            <input
+              type="text"
+              class="form-control"
+              id="breed"
+              name="breed"
+            />
           </div>
           <div class="form-group mb-3">
             <label for="type">Type:</label>
-            <input type="text" class="form-control" id="type" name="type" />
+            <input
+              type="text"
+              class="form-control"
+              id="type"
+              name="type"
+            />
           </div>
           <button type="submit" class="btn btn-primary">Apply Filters</button>
         </form>
@@ -86,11 +96,7 @@
   <% } else { %>
   <div class="text-center mb-5">
     <h1>Welcome to FurEverHome</h1>
-    <p>
-      Your one-stop destination for adopting pets and finding them a forever
-      home. Browse through our collection of pets and find your new best friend
-      today!
-    </p>
+    <p>Your one-stop destination for adopting pets and finding them a forever home. Browse through our collection of pets and find your new best friend today!</p>
   </div>
   <div class="row">
     <% pets.forEach(pet => { %>
