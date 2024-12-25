@@ -3,12 +3,12 @@
 <div class="container mt-5">
   <h1>Your Favorites</h1>
   <div class="row">
-    <% favorites.forEach(pet => { %>
+    <% pets.forEach(pet => { %>
     <div class="col-md-3 mb-4">
       <div class="card h-100">
         <a href="/pets/<%= pet._id %>">
           <img
-            src="<%= pet.imageUrls[0] %>"
+            src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
             class="card-img-top"
             alt="<%= pet.name %>"
           />

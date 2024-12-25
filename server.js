@@ -95,6 +95,15 @@ app.get('/', async (req, res) => {
   if (req.query.type) {
     query.type = new RegExp(req.query.type, 'i'); // Case-insensitive regex
   }
+  if (req.query.query) {
+    query.$or = [
+      { name: new RegExp(req.query.query, 'i') },
+      { breed: new RegExp(req.query.query, 'i') },
+      { type: new RegExp(req.query.query, 'i') },
+    ];
+  }
+
+  console.log('Query:', query); // Debug statement
 
   let pets;
   if (req.user) {
@@ -108,6 +117,8 @@ app.get('/', async (req, res) => {
     }).populate('owner');
     pets = petsWithImages.sort(() => 0.5 - Math.random()).slice(0, 10);
   }
+
+  console.log('Pets:', pets); // Debug statement
 
   res.render('home.ejs', { pets, user: req.user });
 });
