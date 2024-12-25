@@ -36,6 +36,9 @@
               <a class="nav-link" href="/pets/yourPets">Your Pets</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/pets/new" style="color: white; background-color: red; border-radius: 5px; padding: 5px 10px;">Add New Pet</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="/auth/logout">Logout</a>
             </li>
             <% } else { %>
@@ -51,8 +54,8 @@
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
+            <h4 class="nav-link" id="welcome-sign">Welcome <%= user.name %></h4>
         </div>
       </div>
     </nav>
-    </header>
     <main role="main" class="container mt-5">

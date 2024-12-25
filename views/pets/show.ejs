@@ -4,10 +4,10 @@
 <div class="container">
   <div class="pet-card">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <img src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>" alt="<%= pet.name %>">
       </div>
-      <div class="col-md-6 pet-card-body">
+      <div class="col-md-9 pet-card-body">
         <h2 class="pet-card-title"><%= pet.name %></h2>
         <p class="pet-card-details"><strong>Type:</strong> <%= pet.type %></p>
         <p class="pet-card-details"><strong>Breed:</strong> <%= pet.breed %></p>
