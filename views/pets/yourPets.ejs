@@ -1,25 +1,23 @@
-<%- include('../partials/header.ejs') %>
-
+<%- include('../partials/header.ejs') %> 
 <div class="container mt-5">
-  <div class="row">
-    <% pets.forEach(pet => { %>
-    <div class="col-md-3 mb-4">
-      <div class="card h-100">
-        <a href="/pets/<%= pet._id %>">
-          <img
-            src="<%= pet.imageurl %>"
-            class="card-img-top"
-            alt="<%= pet.name %>"
-            style="height: 200px; object-fit: contain"
-          />
-          <div class="card-body">
-            <h5 class="card-title"><%= pet.name %></h5>
-          </div>
-        </a>
+  <% pets.forEach(pet => { %>
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card h-100">
+          <a href="/pets/<%= pet._id %>">
+            <div class="pet-card">
+              <img
+                src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
+                alt="<%= pet.name %>"
+              />
+            <div class="card-body">
+              <h5 class="card-title"><%= pet.name %></h5>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
     <% }) %>
-  </div>
 </div>
 
 <%- include('../partials/footer.ejs') %>

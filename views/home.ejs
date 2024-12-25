@@ -79,25 +79,25 @@
     </div>
   </div>
 
-  <% if (user) { %>
-  <div class="row">
-    <% pets.forEach(pet => { %>
-    <div class="col-md-4">
-      <div class="pet-card">
-        <img
-          src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
-          alt="<%= pet.name %>"
-        />
-        <div class="pet-card-body">
-          <h2 class="pet-card-title"><%= pet.name %></h2>
-          <a href="/pets/<%= pet._id %>" class="btn btn-primary mt-2"
-            >View Details</a
-          >
+  <% pets.forEach(pet => { %>
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card h-100">
+          <a href="/pets/<%= pet._id %>">
+            <div class="pet-card">
+              <img
+                src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
+                alt="<%= pet.name %>"
+              />
+            <div class="card-body">
+              <h5 class="card-title"><%= pet.name %></h5>
+            </div>
+          </a>
         </div>
       </div>
     </div>
     <% }) %>
-  </div>
+  <% } %>
 </div>
 
 <%- include('./partials/footer.ejs') %>
