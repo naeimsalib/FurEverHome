@@ -1,21 +1,29 @@
 <%- include('../partials/header.ejs') %>
 
 <div class="container mt-5">
-  <h1>Your Favorites</h1>
+  <h1>Your Favorite Pets</h1>
   <div class="row">
     <% pets.forEach(pet => { %>
-    <div class="col-md-3 mb-4">
-      <div class="card h-100">
-        <a href="/pets/<%= pet._id %>">
-          <img
-            src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
-            class="card-img-top"
-            alt="<%= pet.name %>"
-          />
-          <div class="card-body">
-            <h5 class="card-title"><%= pet.name %></h5>
-          </div>
-        </a>
+    <div class="col-md-4">
+      <div class="pet-card">
+        <img
+          src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
+          alt="<%= pet.name %>"
+        />
+        <div class="pet-card-body">
+          <h2 class="pet-card-title"><%= pet.name %></h2>
+          <p class="pet-card-details"><strong>Type:</strong> <%= pet.type %></p>
+          <p class="pet-card-details">
+            <strong>Breed:</strong> <%= pet.breed %>
+          </p>
+          <p class="pet-card-details"><strong>Age:</strong> <%= pet.age %></p>
+          <p class="pet-card-details">
+            <strong>Location:</strong> <%= pet.location %>
+          </p>
+          <a href="/pets/<%= pet._id %>" class="btn btn-primary mt-2"
+            >View Details</a
+          >
+        </div>
       </div>
     </div>
     <% }) %>
