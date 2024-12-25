@@ -1,3 +1,4 @@
+/* Existing CSS */
 * {
   box-sizing: border-box;
   padding: 0;
@@ -301,40 +302,43 @@ button:hover {
   }
 }
 
-/* New styles for pet cards */
-.pet-card {
-  background-color: #ffffff; /* Off-white background */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-.pet-card img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-.pet-card-body {
-  padding: 7px;
-  text-align: left;
-}
-
-.pet-card-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-top: 10px;
-}
-
-.pet-card-details {
+/* New CSS for Filter Button and Age Slider */
+.filter-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
   font-size: 1rem;
-  color: #6c757d;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.btn-container {
+.filter-button:hover {
+  background-color: #0056b3;
+}
+
+.slider-container {
   display: flex;
-  justify-content: center;
+  align-items: center;
   gap: 10px;
-  margin-top: 15px;
+}
+
+.slider-container input[type="range"] {
+  width: 100%;
+}
+
+.slider-value {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  border-radius: 10px; 
+  padding: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 350px; 
+  height: auto;
+  max-height: none; 
+  overflow-y: visible; 
 }

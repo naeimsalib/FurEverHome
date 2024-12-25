@@ -40,7 +40,7 @@ router.post('/sign-up', async (req, res) => {
 });
 
 // GET /auth/sign-out - Handle sign-out
-router.get('/sign-out', (req, res) => {
+router.get('/logout', (req, res) => {
   req.session.destroy();
   res.redirect('/');
 });

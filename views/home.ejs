@@ -4,26 +4,66 @@
   <% if (user) { %>
   <div class="d-flex justify-content-end mb-3">
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+      <button
+        class="filter-button dropdown-toggle"
+        type="button"
+        id="filterDropdown"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
         Filter ⬇️
       </button>
       <div class="dropdown-menu p-4" aria-labelledby="filterDropdown">
         <form action="/" method="GET">
           <div class="form-group mb-3">
             <label for="vaccination">Has any vaccinations:</label>
-            <input type="checkbox" id="vaccination" name="vaccination" value="true" />
+            <input
+              type="checkbox"
+              id="vaccination"
+              name="vaccination"
+              value="true"
+            />
           </div>
           <div class="form-group mb-3">
             <label for="ageMin">Age (Min):</label>
-            <input type="number" class="form-control" id="ageMin" name="ageMin" />
+            <div class="slider-container">
+              <input
+                type="range"
+                class="form-control-range"
+                id="ageMin"
+                name="ageMin"
+                min="1"
+                max="35"
+                value="1"
+                oninput="document.getElementById('ageMinValue').innerText = this.value"
+              />
+              <span id="ageMinValue">1</span>
+            </div>
           </div>
           <div class="form-group mb-3">
             <label for="ageMax">Age (Max):</label>
-            <input type="number" class="form-control" id="ageMax" name="ageMax" />
+            <div class="slider-container">
+              <input
+                type="range"
+                class="form-control-range"
+                id="ageMax"
+                name="ageMax"
+                min="1"
+                max="35"
+                value="35"
+                oninput="document.getElementById('ageMaxValue').innerText = this.value"
+              />
+              <span id="ageMaxValue">35</span>
+            </div>
           </div>
           <div class="form-group mb-3">
             <label for="location">Location:</label>
-            <input type="text" class="form-control" id="location" name="location" />
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              name="location"
+            />
           </div>
           <div class="form-group mb-3">
             <label for="breed">Breed:</label>
@@ -44,14 +84,23 @@
     <% pets.forEach(pet => { %>
     <div class="col-md-4">
       <div class="pet-card">
-        <img src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>" alt="<%= pet.name %>">
+        <img
+          src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
+          alt="<%= pet.name %>"
+        />
         <div class="pet-card-body">
           <h2 class="pet-card-title"><%= pet.name %></h2>
           <p class="pet-card-details"><strong>Type:</strong> <%= pet.type %></p>
-          <p class="pet-card-details"><strong>Breed:</strong> <%= pet.breed %></p>
+          <p class="pet-card-details">
+            <strong>Breed:</strong> <%= pet.breed %>
+          </p>
           <p class="pet-card-details"><strong>Age:</strong> <%= pet.age %></p>
-          <p class="pet-card-details"><strong>Location:</strong> <%= pet.location %></p>
-          <a href="/pets/<%= pet._id %>" class="btn btn-primary mt-2">View Details</a>
+          <p class="pet-card-details">
+            <strong>Location:</strong> <%= pet.location %>
+          </p>
+          <a href="/pets/<%= pet._id %>" class="btn btn-primary mt-2"
+            >View Details</a
+          >
         </div>
       </div>
     </div>
