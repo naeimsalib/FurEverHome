@@ -2,12 +2,26 @@
 
 <h1 class="text-center my-4"><%= pet.name %></h1>
 <div class="container">
-  <div class="pet-card">
-    <div class="row">
-      <div class="col-md-4">
-        <img src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>" alt="<%= pet.name %>">
+  <div class="row">
+    <div class="col-md-8">
+      <div id="petCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <% pet.imageUrls.forEach((imageUrl, index) => { %>
+          <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+            <img src="<%= imageUrl %>" class="d-block w-100" alt="<%= pet.name %>">
+          </div>
+          <% }) %>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#petCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#petCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
-      <div class="col-md-9 pet-card-body">
+      <div class="pet-details mt-3">
         <h2 class="pet-card-title"><%= pet.name %></h2>
         <p class="pet-card-details"><strong>Type:</strong> <%= pet.type %></p>
         <p class="pet-card-details"><strong>Breed:</strong> <%= pet.breed %></p>
@@ -46,7 +60,34 @@
         <% } %>
       </div>
     </div>
+    <div class="col-md-4">
+      <div class="pet-story">
+        <h2>Pet Story</h2>
+        <% if (pet.story) { %>
+        <p id="story-text"><%= pet.story.text %></p>
+        <% } else { %>
+        <p id="story-text">No story available for this pet.</p>
+        <% } %>
+        <% if (user && (user._id.equals(pet.owner._id) || user.isAdmin)) { %>
+        <div class="btn-container">
+          <button class="btn btn-warning" onclick="toggleEditStory()">Edit Story</button>
+          <form action="/pets/<%= pet._id %>/story?_method=DELETE" method="POST" style="display: inline">
+            <button type="submit" class="btn btn-danger">Delete Story</button>
+          </form>
+        </div>
+        <form id="edit-story-form" action="/pets/<%= pet._id %>/story?_method=PUT" method="POST" style="display: none;">
+          <div class="form-group">
+            <label for="story">Edit Story:</label>
+            <textarea class="form-control" id="story" name="text" rows="5"><%= pet.story ? pet.story.text : '' %></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mt-2">Save</button>
+          <button type="button" class="btn btn-secondary mt-2" onclick="toggleEditStory()">Cancel</button>
+        </form>
+        <% } %>
+      </div>
+    </div>
   </div>
+
   <div class="row mt-4">
     <div class="col-md-12">
       <h2>Comments</h2>
@@ -80,3 +121,17 @@
 </div>
 
 <%- include('../partials/footer.ejs') %>
+
+<script>
+  function toggleEditStory() {
+    const storyText = document.getElementById('story-text');
+    const editStoryForm = document.getElementById('edit-story-form');
+    if (editStoryForm.style.display === 'none') {
+      editStoryForm.style.display = 'block';
+      storyText.style.display = 'none';
+    } else {
+      editStoryForm.style.display = 'none';
+      storyText.style.display = 'block';
+    }
+  }
+</script>

@@ -23,36 +23,46 @@ router.get('/new', ensureSignedIn, (req, res) => {
 });
 
 // POST /pets - Add a new pet
-router.post('/', ensureSignedIn, upload.array('images', 10), async (req, res) => {
-  const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
-  const pet = new Pet({
-    name: req.body.name,
-    breed: req.body.breed,
-    type: req.body.type,
-    age: req.body.age,
-    vaccination: req.body.vaccination,
-    imageUrls: imageUrls,
-    location: req.body.location,
-    owner: req.user._id,
-  });
-  await pet.save();
-  res.redirect(`/pets/${pet._id}`);
-});
+router.post(
+  '/',
+  ensureSignedIn,
+  upload.array('images', 10),
+  async (req, res) => {
+    const imageUrls = req.files.map((file) => `/uploads/${file.filename}`);
+    const pet = new Pet({
+      name: req.body.name,
+      breed: req.body.breed,
+      type: req.body.type,
+      age: req.body.age,
+      vaccination: req.body.vaccination,
+      imageUrls: imageUrls,
+      location: req.body.location,
+      owner: req.user._id,
+    });
+    await pet.save();
+    res.redirect(`/pets/${pet._id}`);
+  }
+);
 
 // POST /pets/:id/images - Add images to an existing pet
-router.post('/:id/images', ensureSignedIn, upload.array('images', 10), async (req, res) => {
-  const pet = await Pet.findById(req.params.id);
-  if (!pet) {
-    return res.redirect('/pets');
+router.post(
+  '/:id/images',
+  ensureSignedIn,
+  upload.array('images', 10),
+  async (req, res) => {
+    const pet = await Pet.findById(req.params.id);
+    if (!pet) {
+      return res.redirect('/pets');
+    }
+    if (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin) {
+      return res.redirect(`/pets/${pet._id}`);
+    }
+    const newImageUrls = req.files.map((file) => `/uploads/${file.filename}`);
+    pet.imageUrls.push(...newImageUrls);
+    await pet.save();
+    res.redirect(`/pets/${pet._id}`);
   }
-  if (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin) {
-    return res.redirect(`/pets/${pet._id}`);
-  }
-  const newImageUrls = req.files.map(file => `/uploads/${file.filename}`);
-  pet.imageUrls.push(...newImageUrls);
-  await pet.save();
-  res.redirect(`/pets/${pet._id}`);
-});
+);
 
 // GET /pets/yourPets (your pets functionality) - show pets created by the logged-in user
 router.get('/yourPets', ensureSignedIn, async (req, res) => {
@@ -97,7 +107,11 @@ router.post('/:id/story', ensureSignedIn, async (req, res) => {
 // GET /pets/:id/story/edit - Show form to edit a pet story
 router.get('/:id/story/edit', ensureSignedIn, async (req, res) => {
   const pet = await Pet.findById(req.params.id).populate('story');
-  if (!pet || !pet.story || (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)) {
+  if (
+    !pet ||
+    !pet.story ||
+    (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)
+  ) {
     return res.redirect(`/pets/${req.params.id}`);
   }
   res.render('pets/editStory', { title: 'Edit Pet Story', pet });
@@ -106,7 +120,11 @@ router.get('/:id/story/edit', ensureSignedIn, async (req, res) => {
 // PUT /pets/:id/story - Update a pet story
 router.put('/:id/story', ensureSignedIn, async (req, res) => {
   const pet = await Pet.findById(req.params.id).populate('story');
-  if (!pet || !pet.story || (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)) {
+  if (
+    !pet ||
+    !pet.story ||
+    (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)
+  ) {
     return res.redirect(`/pets/${req.params.id}`);
   }
   pet.story.text = req.body.text;
@@ -117,7 +135,11 @@ router.put('/:id/story', ensureSignedIn, async (req, res) => {
 // DELETE /pets/:id/story - Delete a pet story
 router.delete('/:id/story', ensureSignedIn, async (req, res) => {
   const pet = await Pet.findById(req.params.id);
-  if (!pet || !pet.story || (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)) {
+  if (
+    !pet ||
+    !pet.story ||
+    (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)
+  ) {
     return res.redirect(`/pets/${req.params.id}`);
   }
   await PetStory.findByIdAndDelete(pet.story);
