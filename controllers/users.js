@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const Pet = require('../models/pet');
+const Comment = require('../models/comment');
 const bcrypt = require('bcrypt');
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 
@@ -18,8 +20,26 @@ router.delete('/:id', ensureSignedIn, async (req, res) => {
   if (!req.user.isAdmin) {
     return res.redirect('/');
   }
-  await User.findByIdAndDelete(req.params.id);
-  res.redirect('/users');
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.redirect('/error');
+    }
+
+    // Delete all pets related to the user
+    await Pet.deleteMany({ owner: user._id });
+
+    // Delete all comments related to the user
+    await Comment.deleteMany({ user: user._id });
+
+    // Delete the user
+    await User.findByIdAndDelete(req.params.id);
+
+    res.redirect('/users');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/error');
+  }
 });
 
 // GET /users/edit - Show form to edit user information

@@ -132,8 +132,6 @@ app.use('/pets', require('./controllers/pets'));
 
 app.use('/favorites', require('./controllers/favorites'));
 
-app.use('/pets', require('./controllers/comments'));
-
 app.use('/users', require('./controllers/users'));
 
 // Any requests that get this far must have a signed in

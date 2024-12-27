@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Pet = require('../models/pet');
 const PetStory = require('../models/petStory');
+const Comment = require('../models/comment');
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 const multer = require('multer');
 const path = require('path');
@@ -175,13 +176,76 @@ router.delete('/:id/story', ensureSignedIn, async (req, res) => {
 
 // DELETE /pets/:id - Delete a pet
 router.delete('/:id', ensureSignedIn, async (req, res) => {
-  const pet = await Pet.findById(req.params.id);
-  if (!pet || (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)) {
-    return res.redirect('/pets');
+  try {
+    const pet = await Pet.findById(req.params.id);
+    if (!pet) {
+      return res.redirect('/error');
+    }
+
+    // Delete all comments related to the pet
+    await Comment.deleteMany({ pet: pet._id });
+
+    // Delete the pet
+    await Pet.findByIdAndDelete(req.params.id);
+
+    res.redirect('/pets');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/error');
   }
-  await PetStory.findByIdAndDelete(pet.story);
-  await Pet.findByIdAndDelete(pet._id);
-  res.redirect('/pets/yourPets');
+});
+
+// POST /pets/:id/comments - Add a comment to a pet
+router.post('/:id/comments', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id);
+  const comment = new Comment({
+    text: req.body.text,
+    author: req.user._id,
+  });
+  await comment.save();
+  pet.comments.push(comment._id);
+  await pet.updateOne({ $push: { comments: comment._id } });
+  res.redirect(`/pets/${req.params.id}`);
+});
+
+// GET /pets/:id/comments/:commentId/edit - Show form to edit a comment
+router.get(
+  '/:id/comments/:commentId/edit',
+  ensureSignedIn,
+  async (req, res) => {
+    const pet = await Pet.findById(req.params.id);
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment.author.equals(req.user._id)) {
+      return res.redirect(`/pets/${req.params.id}`);
+    }
+    res.render('comments/edit', { title: 'Edit Comment', pet, comment });
+  }
+);
+
+// PUT /pets/:id/comments/:commentId - Update a comment
+router.put('/:id/comments/:commentId', ensureSignedIn, async (req, res) => {
+  const comment = await Comment.findById(req.params.commentId);
+  if (!comment.author.equals(req.user._id)) {
+    return res.redirect(`/pets/${req.params.id}`);
+  }
+  comment.text = req.body.text;
+  await comment.save();
+  res.redirect(`/pets/${req.params.id}`);
+});
+
+// DELETE /pets/:id/comments/:commentId - Delete a comment
+router.delete('/:id/comments/:commentId', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id);
+  const comment = await Comment.findById(req.params.commentId);
+  if (
+    comment.author.equals(req.user._id) ||
+    pet.owner.equals(req.user._id) ||
+    req.user.isAdmin
+  ) {
+    await comment.deleteOne();
+    await pet.updateOne({ $pull: { comments: comment._id } });
+  }
+  res.redirect(`/pets/${req.params.id}`);
 });
 
 module.exports = router;
