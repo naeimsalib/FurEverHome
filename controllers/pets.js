@@ -190,7 +190,6 @@ router.delete('/:id', ensureSignedIn, async (req, res) => {
 
     res.redirect('/pets');
   } catch (err) {
-    console.error(err);
     res.redirect('/error');
   }
 });

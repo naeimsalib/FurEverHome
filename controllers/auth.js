@@ -54,7 +54,6 @@ router.post('/sign-up', async (req, res) => {
         user: req.user,
       });
     }
-    console.error(err);
     res.redirect('/error');
   }
 });
