@@ -88,6 +88,31 @@ router.get('/:id', ensureSignedIn, async (req, res) => {
   res.render('pets/show', { title: 'Pet Profile', pet, user: req.user });
 });
 
+// GET /pets/:id/edit - Show form to edit a pet
+router.get('/:id/edit', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id);
+  if (!pet || (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)) {
+    return res.redirect(`/pets/${req.params.id}`);
+  }
+  res.render('pets/edit', { title: 'Edit Pet', pet });
+});
+
+// PUT /pets/:id - Update a pet
+router.put('/:id', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id);
+  if (!pet || (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)) {
+    return res.redirect(`/pets/${req.params.id}`);
+  }
+  pet.name = req.body.name;
+  pet.breed = req.body.breed;
+  pet.type = req.body.type;
+  pet.age = req.body.age;
+  pet.vaccination = req.body.vaccination;
+  pet.location = req.body.location;
+  await pet.save();
+  res.redirect(`/pets/${pet._id}`);
+});
+
 // POST /pets/:id/story - Add a story to a pet
 router.post('/:id/story', ensureSignedIn, async (req, res) => {
   const pet = await Pet.findById(req.params.id);

@@ -62,7 +62,7 @@
     </div>
     <div class="col-md-4">
       <div class="pet-story">
-        <h2>Pet Story</h2>
+        <h2><span style="color: lightgray; font-weight: bold;"><%= pet.name %>'s</span> Story</h2>
         <% if (pet.story) { %>
         <p id="story-text"><%= pet.story.text %></p>
         <% } else { %>
@@ -75,7 +75,7 @@
             <button type="submit" class="btn btn-danger">Delete Story</button>
           </form>
         </div>
-        <form id="edit-story-form" action="/pets/<%= pet._id %>/story?_method=PUT" method="POST" style="display: none;">
+        <form id="edit-story-form" action="/pets/<%= pet._id %>/story?_method=<%= pet.story ? 'PUT' : 'POST' %>" method="POST" style="display: none;">
           <div class="form-group">
             <label for="story">Edit Story:</label>
             <textarea class="form-control" id="story" name="text" rows="5"><%= pet.story ? pet.story.text : '' %></textarea>
@@ -102,8 +102,16 @@
           </form>
           <% } %>
           <% if (user && comment.author._id.equals(user._id)) { %>
-          <a href="/pets/<%= pet._id %>/comments/<%= comment._id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+          <button class="btn btn-warning btn-sm" onclick="toggleEditComment('<%= comment._id %>')">Edit</button>
           <% } %>
+          <form id="edit-comment-form-<%= comment._id %>" action="/pets/<%= pet._id %>/comments/<%= comment._id %>?_method=PUT" method="POST" style="display: none;">
+            <div class="form-group">
+              <label for="comment">Edit Comment:</label>
+              <textarea class="form-control" id="comment" name="text" rows="3" required><%= comment.text %></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Save</button>
+            <button type="button" class="btn btn-secondary mt-2" onclick="toggleEditComment('<%= comment._id %>')">Cancel</button>
+          </form>
         </div>
       </div>
       <% }) %>
@@ -132,6 +140,15 @@
     } else {
       editStoryForm.style.display = 'none';
       storyText.style.display = 'block';
+    }
+  }
+
+  function toggleEditComment(commentId) {
+    const editCommentForm = document.getElementById(`edit-comment-form-${commentId}`);
+    if (editCommentForm.style.display === 'none') {
+      editCommentForm.style.display = 'block';
+    } else {
+      editCommentForm.style.display = 'none';
     }
   }
 </script>

@@ -51,7 +51,7 @@ router.delete('/:id/comments/:commentId', ensureSignedIn, async (req, res) => {
     pet.owner.equals(req.user._id) ||
     req.user.isAdmin
   ) {
-    await comment.remove();
+    await comment.deleteOne();
     await pet.updateOne({ $pull: { comments: comment._id } });
   }
   res.redirect(`/pets/${req.params.id}`);

@@ -1,10 +1,6 @@
 <%- include('../partials/header.ejs') %>
 
-<form
-  action="/pets/<%= pet._id %>?_method=PUT"
-  method="POST"
-  class="form-signin"
->
+<form action="/pets/<%= pet._id %>?_method=PUT" method="POST" class="form-signin">
   <label for="name" class="sr-only">Name</label>
   <input
     type="text"
@@ -15,6 +11,16 @@
     value="<%= pet.name %>"
     required
     autofocus
+  />
+  <label for="breed" class="sr-only">Breed</label>
+  <input
+    type="text"
+    id="breed"
+    name="breed"
+    class="form-control"
+    placeholder="Breed"
+    value="<%= pet.breed %>"
+    required
   />
   <label for="type" class="sr-only">Type</label>
   <input
@@ -37,21 +43,12 @@
   />
   <label for="vaccination" class="sr-only">Vaccination</label>
   <input
-    type="number"
+    type="text"
     id="vaccination"
     name="vaccination"
     class="form-control"
     placeholder="Vaccination"
     value="<%= pet.vaccination %>"
-  />
-  <label for="imageurl" class="sr-only">Image URL</label>
-  <input
-    type="text"
-    id="imageurl"
-    name="imageurl"
-    class="form-control"
-    placeholder="Image URL"
-    value="<%= pet.imageurl %>"
   />
   <label for="location" class="sr-only">Location</label>
   <input
