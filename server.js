@@ -115,7 +115,7 @@ app.get('/', async (req, res) => {
       ...query,
       imageUrls: { $exists: true, $ne: [] },
     }).populate('owner');
-    pets = petsWithImages.sort(() => 0.5 - Math.random()).slice(0, 10);
+    pets = petsWithImages.sort(() => 0.5 - Math.random()).slice(0, 12);
   }
 
   console.log('Pets:', pets); // Debug statement

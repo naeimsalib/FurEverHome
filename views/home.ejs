@@ -81,7 +81,8 @@
   <% } %>
 
   <div class="row">
-    <% pets.forEach(pet => { %>
+    <% console.log(pets.length) %>
+    <% pets.slice(0, 14).forEach((pet, index) => { %>
     <div class="col-md-3 mb-4">
       <div class="card h-100">
         <a href="<%= user ? '/pets/' + pet._id : '#' %>">
@@ -93,11 +94,9 @@
             />
           </div>
         </a>
-        <% if (user) { %>
         <div class="card-body">
           <h5 class="card-title"><%= pet.name %></h5>
         </div>
-        <% } %>
       </div>
     </div>
     <% }) %>
