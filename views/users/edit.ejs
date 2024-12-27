@@ -1,6 +1,11 @@
 <%- include('../partials/header.ejs') %>
 
 <div class="form-container">
+  <% if (error) { %>
+    <div class="alert alert-danger" role="alert">
+      <%= error %>
+    </div>
+  <% } %>
   <form action="/users/edit" method="POST" class="auth-form">
     <div class="form-group">
       <label for="name">Name:</label>

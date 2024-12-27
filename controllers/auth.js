@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 // GET /auth/sign-in - Show sign-in form
 router.get('/sign-in', (req, res) => {
-  res.render('auth/sign-in', { title: 'Sign In', user: req.user });
+  res.render('auth/sign-in', { title: 'Sign In', user: req.user, error: null });
 });
 
 // POST /auth/sign-in - Handle sign-in
@@ -26,17 +26,37 @@ router.post('/sign-in', async (req, res) => {
 
 // GET /auth/sign-up - Show sign-up form
 router.get('/sign-up', (req, res) => {
-  res.render('auth/sign-up', { title: 'Sign Up', user: req.user });
+  res.render('auth/sign-up', { title: 'Sign Up', user: req.user, error: null });
 });
 
 // POST /auth/sign-up - Handle sign-up
 router.post('/sign-up', async (req, res) => {
-  const { name, email, password } = req.body;
-  const hashedPassword = bcrypt.hashSync(password, 10);
-  const user = new User({ name, email, password: hashedPassword });
-  await user.save();
-  req.session.userId = user._id;
-  res.redirect('/');
+  const { name, email, password, confirmPassword } = req.body;
+  if (password !== confirmPassword) {
+    return res.render('auth/sign-up', {
+      title: 'Sign Up',
+      error: 'Passwords do not match',
+      user: req.user,
+    });
+  }
+  try {
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const user = new User({ name, email, password: hashedPassword });
+    await user.save();
+    req.session.userId = user._id;
+    res.redirect('/');
+  } catch (err) {
+    if (err.code === 11000) {
+      // Duplicate key error
+      return res.render('auth/sign-up', {
+        title: 'Sign Up',
+        error: 'Email already exists',
+        user: req.user,
+      });
+    }
+    console.error(err);
+    res.redirect('/error');
+  }
 });
 
 // GET /auth/sign-out - Handle sign-out

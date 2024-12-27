@@ -26,7 +26,7 @@ router.delete('/:id', ensureSignedIn, async (req, res) => {
 router.get('/edit', ensureSignedIn, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    res.render('users/edit', { title: 'Edit Profile', user });
+    res.render('users/edit', { title: 'Edit Profile', user, error: null });
   } catch (err) {
     console.error(err);
     res.redirect('/error');
@@ -41,6 +41,13 @@ router.post('/edit', ensureSignedIn, async (req, res) => {
     user.email = req.body.email;
 
     if (req.body.password) {
+      if (req.body.password !== req.body['confirm-password']) {
+        return res.render('users/edit', {
+          title: 'Edit Profile',
+          user,
+          error: 'Passwords do not match',
+        });
+      }
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(req.body.password, salt);
     }
@@ -48,6 +55,14 @@ router.post('/edit', ensureSignedIn, async (req, res) => {
     await user.save();
     res.redirect('/');
   } catch (err) {
+    if (err.code === 11000) {
+      // Duplicate key error
+      return res.render('users/edit', {
+        title: 'Edit Profile',
+        user,
+        error: 'Email already exists',
+      });
+    }
     console.error(err);
     res.redirect('/error');
   }
