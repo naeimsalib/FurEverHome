@@ -206,7 +206,7 @@ button:hover {
 }
 
 .nav-link:hover {
-  color: #d4d4d4 !important;
+  color: #a1a0a0 !important;
 }
 
 .btn-outline-success {
@@ -355,4 +355,29 @@ button:hover {
   object-fit: cover;
   margin: 0 auto;
   display: block;
+}
+
+/* New CSS for header buttons */
+.navbar-nav .nav-link {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: #0056b3;
+  color: #ffffff !important;
+}
+
+.navbar-nav .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #ffffff;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.navbar-nav .btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+  color: #ffffff;
 }
