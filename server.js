@@ -120,7 +120,7 @@ app.get('/', async (req, res) => {
 
   console.log('Pets:', pets); // Debug statement
 
-  res.render('home.ejs', { pets, user: req.user });
+  res.render('home.ejs', { title: 'Home Page', pets, user: req.user });
 });
 
 // '/auth' is the "starts with" path that the request must match
