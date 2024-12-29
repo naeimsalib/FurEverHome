@@ -342,7 +342,7 @@ button:hover {
   border-radius: 10px; 
   padding: 10px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 350px; 
+  width: 500px; 
   height: auto;
   max-height: none; 
   overflow-y: visible; 
@@ -380,4 +380,22 @@ button:hover {
   background-color: #c82333;
   border-color: #bd2130;
   color: #ffffff;
+}
+
+/* New CSS for filter box */
+.filter-box {
+  width: 500px;
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.filter-box .form-group {
+  grid-column: span 2;
+}
+
+.filter-box .form-group:nth-child(2),
+.filter-box .form-group:nth-child(3) {
+  grid-column: span 1;
 }

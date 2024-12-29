@@ -13,7 +13,10 @@
       >
         Filter ⬇️
       </button>
-      <div class="dropdown-menu p-4" aria-labelledby="filterDropdown">
+      <div
+        class="dropdown-menu p-4 filter-box"
+        aria-labelledby="filterDropdown"
+      >
         <form action="/" method="GET">
           <div class="form-group mb-3">
             <label for="vaccination">Has any vaccinations:</label>
@@ -26,35 +29,27 @@
           </div>
           <div class="form-group mb-3">
             <label for="ageMin">Age (Min):</label>
-            <div class="slider-container">
-              <input
-                type="range"
-                class="form-control-range"
-                id="ageMin"
-                name="ageMin"
-                min="1"
-                max="35"
-                value="1"
-                oninput="document.getElementById('ageMinValue').innerText = this.value"
-              />
-              <span id="ageMinValue">1</span>
-            </div>
+            <input
+              type="number"
+              class="form-control"
+              id="ageMin"
+              name="ageMin"
+              min="1"
+              max="35"
+              value="1"
+            />
           </div>
           <div class="form-group mb-3">
             <label for="ageMax">Age (Max):</label>
-            <div class="slider-container">
-              <input
-                type="range"
-                class="form-control-range"
-                id="ageMax"
-                name="ageMax"
-                min="1"
-                max="35"
-                value="35"
-                oninput="document.getElementById('ageMaxValue').innerText = this.value"
-              />
-              <span id="ageMaxValue">35</span>
-            </div>
+            <input
+              type="number"
+              class="form-control"
+              id="ageMax"
+              name="ageMax"
+              min="1"
+              max="35"
+              value="35"
+            />
           </div>
           <div class="form-group mb-3">
             <label for="location">Location:</label>
