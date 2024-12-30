@@ -12,7 +12,7 @@ const petSchema = new mongoose.Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   adoptionRequests: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'AdoptionRequest' },
-  ], // New field
+  ],
 });
 
 module.exports = mongoose.model('Pet', petSchema);
