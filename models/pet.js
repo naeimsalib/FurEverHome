@@ -1,46 +1,18 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const petSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  breed: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String,
-    required: true,
-  },
-  age: {
-    type: Number,
-  },
-  vaccination: {
-    type: String,
-  },
-  imageUrls: [String], // Field to store multiple image URLs
-  location: {
-    type: String,
-  },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Comment',
-    },
-  ],
-  story: {
-    type: Schema.Types.ObjectId,
-    ref: 'PetStory',
-  },
+const petSchema = new mongoose.Schema({
+  name: String,
+  breed: String,
+  type: String,
+  age: Number,
+  vaccination: String,
+  imageUrls: [String],
+  location: String,
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  adoptionRequests: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'AdoptionRequest' },
+  ], // New field
 });
-
-petSchema.index({ name: 'text', breed: 'text', type: 'text' });
 
 module.exports = mongoose.model('Pet', petSchema);
