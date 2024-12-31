@@ -1,14 +1,27 @@
 <%- include('../partials/header.ejs') %>
 <div class="container mt-5">
   <h1>Your Adoption Requests</h1>
-  <ul class="list-group">
+  <div class="row">
     <% adoptionRequests.forEach(request => { %>
-    <li class="list-group-item">
-      <a href="/adoption-requests/<%= request._id %>">
-        Request for <%= request.pet.name %> - <%= request.status %>
-      </a>
-    </li>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <a href="/pets/<%= request.pet._id %>">
+          <div class="pet-card">
+            <img
+              src="<%= request.pet.imageUrls.length > 0 ? request.pet.imageUrls[0] : '/assets/no-image.png' %>"
+              alt="<%= request.pet.name %>"
+              class="img-fluid"
+            />
+          </div>
+        </a>
+        <div class="card-body">
+          <h5 class="card-title"><%= request.pet.name %></h5>
+          <p class="card-text"><strong>Status:</strong> <%= request.status %></p>
+          <a href="/adoption-requests/<%= request._id %>" class="btn btn-primary">View Request</a>
+        </div>
+      </div>
+    </div>
     <% }) %>
-  </ul>
+  </div>
 </div>
 <%- include('../partials/footer.ejs') %>
