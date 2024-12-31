@@ -6,9 +6,11 @@ const adoptionRequestSchema = new mongoose.Schema({
   message: String,
   status: {
     type: String,
-    enum: ['Pending', 'Approved', 'Available'],
+    enum: ['Pending', 'Approved', 'Rejected'],
     default: 'Pending',
   },
+  seenByOwner: { type: Boolean, default: false },
+  seenByRequester: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });
 

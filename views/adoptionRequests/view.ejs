@@ -1,7 +1,7 @@
 <%- include('../partials/header.ejs') %>
 <div class="container mt-5">
   <h1>Adoption Request for <%= adoptionRequest.pet.name %></h1>
-  <p><strong>Requester:</strong> <%= adoptionRequest.requester.name %></p>
+  <p><strong>Requester:</strong> <%= adoptionRequest.requester.name %> (<%= adoptionRequest.requester.email %>)</p>
   <p><strong>Message:</strong> <%= adoptionRequest.message %></p>
   <p><strong>Status:</strong> <%= adoptionRequest.status %></p>
   <% if (adoptionRequest.pet.owner.equals(user._id)) { %>

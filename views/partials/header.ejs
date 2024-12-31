@@ -47,7 +47,11 @@
               <a class="nav-link" href="/pets/yourPets">Your Pets</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/adoption-requests">Adoption Requests</a>
+              <a class="nav-link" href="/adoption-requests">Adoption Requests
+                <% if (user.adoptionRequests && user.adoptionRequests.length > 0) { %>
+                  <span class="notification-badge"><%= user.adoptionRequests.length %></span>
+                <% } %>
+              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link btn btn-danger" href="/pets/new">Add New Pet</a>

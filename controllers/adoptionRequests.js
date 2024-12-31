@@ -34,6 +34,13 @@ router.get('/:id', ensureSignedIn, async (req, res) => {
   const adoptionRequest = await AdoptionRequest.findById(
     req.params.id
   ).populate('pet requester');
+  if (adoptionRequest.requester.equals(req.user._id)) {
+    adoptionRequest.seenByRequester = true;
+  }
+  if (adoptionRequest.pet.owner.equals(req.user._id)) {
+    adoptionRequest.seenByOwner = true;
+  }
+  await adoptionRequest.save();
   res.render('adoptionRequests/view', {
     title: 'Adoption Request',
     adoptionRequest,
@@ -47,6 +54,8 @@ router.post('/:id/approve', ensureSignedIn, async (req, res) => {
   ).populate('pet');
   if (adoptionRequest.pet.owner.equals(req.user._id)) {
     adoptionRequest.status = 'Approved';
+    adoptionRequest.seenByRequester = false;
+    adoptionRequest.seenByOwner = true;
     await adoptionRequest.save();
   }
   res.redirect(`/pets/${adoptionRequest.pet._id}`);
@@ -59,6 +68,8 @@ router.post('/:id/reject', ensureSignedIn, async (req, res) => {
   ).populate('pet');
   if (adoptionRequest.pet.owner.equals(req.user._id)) {
     adoptionRequest.status = 'Rejected';
+    adoptionRequest.seenByRequester = false;
+    adoptionRequest.seenByOwner = true;
     await adoptionRequest.save();
   }
   res.redirect(`/pets/${adoptionRequest.pet._id}`);
@@ -69,6 +80,8 @@ router.post('/:id/update', ensureSignedIn, async (req, res) => {
   const adoptionRequest = await AdoptionRequest.findById(req.params.id).populate('pet');
   if (adoptionRequest.pet.owner.equals(req.user._id)) {
     adoptionRequest.status = req.body.status;
+    adoptionRequest.seenByRequester = false;
+    adoptionRequest.seenByOwner = true;
     await adoptionRequest.save();
   }
   res.redirect(`/pets/${adoptionRequest.pet._id}`);

@@ -1,9 +1,9 @@
 <%- include('../partials/header.ejs') %>
-
 <div class="container mt-5">
+  <h1>Your Pets</h1>
   <div class="row">
     <% pets.forEach(pet => { %>
-    <div class="col-md-3 mb-4">
+    <div class="col-md-4 mb-4">
       <div class="card h-100">
         <a href="/pets/<%= pet._id %>">
           <div class="pet-card">
@@ -11,17 +11,20 @@
               src="<%= pet.imageUrls.length > 0 ? pet.imageUrls[0] : '/assets/no-image.png' %>"
               alt="<%= pet.name %>"
               class="img-fluid"
-              style="max-height: 200px; object-fit: cover"
             />
           </div>
-          <div class="card-body">
-            <h5 class="card-title"><%= pet.name %></h5>
-          </div>
         </a>
+        <div class="card-body">
+          <h5 class="card-title"><%= pet.name %></h5>
+          <% const pendingRequests = pet.adoptionRequests.filter(req => req.status === 'Pending' && !req.seenByOwner); %>
+          <% if (pendingRequests.length > 0) { %>
+            <span class="notification-badge"><%= pendingRequests.length %></span>
+          <% } %>
+          <a href="/pets/<%= pet._id %>" class="btn btn-primary">View Pet</a>
+        </div>
       </div>
     </div>
     <% }) %>
   </div>
 </div>
-
 <%- include('../partials/footer.ejs') %>
