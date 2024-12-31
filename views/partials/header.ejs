@@ -15,17 +15,6 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <style>
-      .notification-badge {
-        position: relative;
-        top: -10px;
-        right: 10px;
-        padding: 5px 10px;
-        border-radius: 50%;
-        background: red;
-        color: white;
-      }
-    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -36,36 +25,48 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/">Home</a>
-            </li>
-            <% if (user) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/favorites">Favorites</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/pets/yourPets">Your Pets</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/adoption-requests">Adoption Requests
-                <% if (user.adoptionRequests && user.adoptionRequests.length > 0) { %>
-                  <span class="notification-badge"><%= user.adoptionRequests.length %></span>
-                <% } %>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link btn btn-danger" href="/pets/new">Add New Pet</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/auth/logout">Logout</a>
-            </li>
+            <% if (!user) { %>
+              <% if (title !== 'Home Page') { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/">Home</a>
+                </li>
+              <% } %>
+              <% if (title !== 'Sign In') { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/auth/sign-in">Sign In</a>
+                </li>
+              <% } %>
+              <% if (title !== 'Sign Up') { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/auth/sign-up">Sign Up</a>
+                </li>
+              <% } %>
             <% } else { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/auth/sign-in">Sign In</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/auth/sign-up">Sign Up</a>
-            </li>
+              <% if (title !== 'Your Favorites') { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/favorites">Favorites</a>
+                </li>
+              <% } %>
+              <% if (title !== 'Your Pets') { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/pets/yourPets">Your Pets</a>
+                </li>
+              <% } %>
+              <% if (title !== 'Your Adoption Requests') { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/adoption-requests">Adoption Requests</a>
+                </li>
+              <% } %>
+              <% if (title !== 'Add a New Pet') { %>
+                <li class="nav-item">
+                  <a class="nav-link btn btn-danger" href="/pets/new">Add New Pet</a>
+                </li>
+              <% } %>
+              <% if (title !== 'Logout') { %>
+                <li class="nav-item">
+                  <a class="nav-link" href="/auth/logout">Logout</a>
+                </li>
+              <% } %>
             <% } %>
           </ul>
           <% if (user) { %>
