@@ -16,10 +16,6 @@
         </a>
         <div class="card-body">
           <h5 class="card-title"><%= pet.name %></h5>
-          <% const pendingRequests = pet.adoptionRequests.filter(req => req.status === 'Pending' && !req.seenByOwner); %>
-          <% if (pendingRequests.length > 0) { %>
-            <span class="notification-badge"><%= pendingRequests.length %></span>
-          <% } %>
           <a href="/pets/<%= pet._id %>" class="btn btn-primary">View Pet</a>
         </div>
       </div>
