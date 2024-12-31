@@ -119,7 +119,7 @@
                   <select name="status" class="form-select form-select-sm mb-2">
                     <option value="Pending" <%= request.status === 'Pending' ? 'selected' : '' %>>Pending</option>
                     <option value="Approved" <%= request.status === 'Approved' ? 'selected' : '' %>>Approved</option>
-                    <option value="Available" <%= request.status === 'Available' ? 'selected' : '' %>>Available</option>
+                    <option value="Rejected" <%= request.status === 'Rejected' ? 'selected' : '' %>>Rejected</option>
                   </select>
                   <button type="submit" class="btn btn-primary btn-sm">Update</button>
                 </form>

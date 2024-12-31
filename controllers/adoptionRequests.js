@@ -66,9 +66,7 @@ router.post('/:id/reject', ensureSignedIn, async (req, res) => {
 
 // POST /adoption-requests/:id/update - Update an adoption request status
 router.post('/:id/update', ensureSignedIn, async (req, res) => {
-  const adoptionRequest = await AdoptionRequest.findById(
-    req.params.id
-  ).populate('pet');
+  const adoptionRequest = await AdoptionRequest.findById(req.params.id).populate('pet');
   if (adoptionRequest.pet.owner.equals(req.user._id)) {
     adoptionRequest.status = req.body.status;
     await adoptionRequest.save();
