@@ -1,0 +1,22 @@
+<%- include('../partials/header.ejs') %>
+<div class="container mt-5">
+  <h1>Adoption Request for <%= adoptionRequest.pet.name %></h1>
+  <p><strong>Requester:</strong> <%= adoptionRequest.requester.name %></p>
+  <p><strong>Message:</strong> <%= adoptionRequest.message %></p>
+  <p><strong>Status:</strong> <%= adoptionRequest.status %></p>
+  <% if (adoptionRequest.pet.owner.equals(user._id)) { %>
+  <form
+    action="/adoption-requests/<%= adoptionRequest._id %>/approve"
+    method="POST"
+  >
+    <button type="submit" class="btn btn-success">Approve</button>
+  </form>
+  <form
+    action="/adoption-requests/<%= adoptionRequest._id %>/reject"
+    method="POST"
+  >
+    <button type="submit" class="btn btn-danger">Reject</button>
+  </form>
+  <% } %>
+</div>
+<%- include('../partials/footer.ejs') %>

@@ -10,6 +10,7 @@ const fs = require('fs'); // Import fs to handle file system operations
 const Pet = require('./models/pet'); // Import the Pet model
 const User = require('./models/user'); // Import the User model
 const Comment = require('./models/comment'); // Ensure Comment model is imported
+const AdoptionRequest = require('./models/adoptionRequest'); // Import the AdoptionRequest model
 
 const app = express();
 
@@ -133,6 +134,8 @@ app.use('/pets', require('./controllers/pets'));
 app.use('/favorites', require('./controllers/favorites'));
 
 app.use('/users', require('./controllers/users'));
+
+app.use('/adoption-requests', require('./controllers/adoptionRequests'));
 
 // Any requests that get this far must have a signed in
 // user thanks to ensureSignedIn middleware

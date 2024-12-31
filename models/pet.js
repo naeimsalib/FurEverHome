@@ -13,6 +13,7 @@ const petSchema = new mongoose.Schema({
   adoptionRequests: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'AdoptionRequest' },
   ],
+  story: { type: mongoose.Schema.Types.ObjectId, ref: 'PetStory' },
 });
 
 module.exports = mongoose.model('Pet', petSchema);

@@ -5,7 +5,7 @@ const AdoptionRequest = require('../models/adoptionRequest');
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 
 // POST /pets/:id/adopt - Create an adoption request
-router.post('/:id/adopt', ensureSignedIn, async (req, res) => {
+router.post('/pets/:id/adopt', ensureSignedIn, async (req, res) => {
   const pet = await Pet.findById(req.params.id);
   const adoptionRequest = new AdoptionRequest({
     pet: pet._id,
@@ -49,7 +49,7 @@ router.post('/:id/approve', ensureSignedIn, async (req, res) => {
     adoptionRequest.status = 'Approved';
     await adoptionRequest.save();
   }
-  res.redirect(`/adoption-requests/${adoptionRequest._id}`);
+  res.redirect(`/pets/${adoptionRequest.pet._id}`);
 });
 
 // POST /adoption-requests/:id/reject - Reject an adoption request
@@ -61,7 +61,19 @@ router.post('/:id/reject', ensureSignedIn, async (req, res) => {
     adoptionRequest.status = 'Rejected';
     await adoptionRequest.save();
   }
-  res.redirect(`/adoption-requests/${adoptionRequest._id}`);
+  res.redirect(`/pets/${adoptionRequest.pet._id}`);
+});
+
+// POST /adoption-requests/:id/update - Update an adoption request status
+router.post('/:id/update', ensureSignedIn, async (req, res) => {
+  const adoptionRequest = await AdoptionRequest.findById(
+    req.params.id
+  ).populate('pet');
+  if (adoptionRequest.pet.owner.equals(req.user._id)) {
+    adoptionRequest.status = req.body.status;
+    await adoptionRequest.save();
+  }
+  res.redirect(`/pets/${adoptionRequest.pet._id}`);
 });
 
 module.exports = router;

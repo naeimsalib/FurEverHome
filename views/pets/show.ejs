@@ -30,6 +30,15 @@
         <p class="pet-card-details"><strong>Location:</strong> <%= pet.location %></p>
         <p class="pet-card-details"><strong>Owner:</strong> <%= pet.owner.name %></p>
         <p class="pet-card-details"><strong>Owner's Email:</strong> <%= pet.owner.email %></p>
+        <p class="pet-card-details"><strong>Status:</strong> 
+          <% if (pet.adoptionRequests.some(req => req.status === 'Approved')) { %>
+            Adopted
+          <% } else if (pet.adoptionRequests.some(req => req.status === 'Pending')) { %>
+            Pending Adoption
+          <% } else { %>
+            Available
+          <% } %>
+        </p>
         <% if (user && (user._id.equals(pet.owner._id) || user.isAdmin)) { %>
         <div class="btn-container">
           <a href="/pets/<%= pet._id %>/edit" class="btn btn-warning">Edit</a>
@@ -44,6 +53,17 @@
             <button type="submit" class="btn btn-primary">
               <%= user.favorites.includes(pet._id) ? '⭐️ Unfavorite' : '⭐️ Favorite' %>
             </button>
+          </form>
+        </div>
+        <% } %>
+        <% if (user && !user._id.equals(pet.owner._id)) { %>
+        <div class="mt-3">
+          <form action="/pets/<%= pet._id %>/adopt" method="POST">
+            <div class="form-group mb-3">
+              <label for="message">Message:</label>
+              <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Request Adoption</button>
           </form>
         </div>
         <% } %>
@@ -85,6 +105,32 @@
         </form>
         <% } %>
       </div>
+      <% if (user && user._id.equals(pet.owner._id)) { %>
+      <div class="adoption-requests mt-4">
+        <h2>Adoption Requests</h2>
+        <% if (pet.adoptionRequests.length > 0) { %>
+          <% pet.adoptionRequests.forEach(request => { %>
+            <div class="card mb-2">
+              <div class="card-body">
+                <p><strong>Requester:</strong> <%= request.requester.name %></p>
+                <p><strong>Message:</strong> <%= request.message %></p>
+                <p><strong>Status:</strong> <%= request.status %></p>
+                <form action="/adoption-requests/<%= request._id %>/update" method="POST" style="display: inline;">
+                  <select name="status" class="form-select form-select-sm mb-2">
+                    <option value="Pending" <%= request.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                    <option value="Approved" <%= request.status === 'Approved' ? 'selected' : '' %>>Approved</option>
+                    <option value="Available" <%= request.status === 'Available' ? 'selected' : '' %>>Available</option>
+                  </select>
+                  <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                </form>
+              </div>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <p>No adoption requests.</p>
+        <% } %>
+      </div>
+      <% } %>
     </div>
   </div>
 

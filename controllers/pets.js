@@ -3,6 +3,7 @@ const router = express.Router();
 const Pet = require('../models/pet');
 const PetStory = require('../models/petStory');
 const Comment = require('../models/comment');
+const AdoptionRequest = require('../models/adoptionRequest'); // Import the AdoptionRequest model
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 const multer = require('multer');
 const path = require('path');
@@ -82,11 +83,26 @@ router.get('/:id', ensureSignedIn, async (req, res) => {
         model: 'User',
       },
     })
-    .populate('story');
+    .populate('story')
+    .populate('adoptionRequests'); // Ensure adoption requests are populated
   if (!pet) {
     return res.redirect('/pets');
   }
   res.render('pets/show', { title: 'Pet Profile', pet, user: req.user });
+});
+
+// POST /pets/:id/adopt - Create an adoption request
+router.post('/:id/adopt', ensureSignedIn, async (req, res) => {
+  const pet = await Pet.findById(req.params.id);
+  const adoptionRequest = new AdoptionRequest({
+    pet: pet._id,
+    requester: req.user._id,
+    message: req.body.message,
+  });
+  await adoptionRequest.save();
+  pet.adoptionRequests.push(adoptionRequest._id);
+  await pet.save();
+  res.redirect(`/pets/${pet._id}`);
 });
 
 // GET /pets/:id/edit - Show form to edit a pet
