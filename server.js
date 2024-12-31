@@ -104,8 +104,6 @@ app.get('/', async (req, res) => {
     ];
   }
 
-  console.log('Query:', query); // Debug statement
-
   let pets;
   if (req.user) {
     // User is logged in, show all pets
@@ -118,8 +116,6 @@ app.get('/', async (req, res) => {
     }).populate('owner');
     pets = petsWithImages.sort(() => 0.5 - Math.random()).slice(0, 12);
   }
-
-  console.log('Pets:', pets); // Debug statement
 
   res.render('home.ejs', { title: 'Home Page', pets, user: req.user });
 });
