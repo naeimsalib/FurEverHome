@@ -17,7 +17,7 @@
     />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg <%= user && user.isAdmin ? 'navbar-danger' : 'navbar-dark bg-dark' %>">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">FurEverHome</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,35 +42,53 @@
                 </li>
               <% } %>
             <% } else { %>
-              <% if (title !== 'Home Page') { %>
-                <li class="nav-item">
-                  <a class="nav-link" href="/">Home</a>
-                </li>
-              <% } %>
-              <% if (title !== 'Your Favorites') { %>
-                <li class="nav-item">
-                  <a class="nav-link" href="/favorites">Favorites</a>
-                </li>
-              <% } %>
-              <% if (title !== 'Your Pets') { %>
-                <li class="nav-item">
-                  <a class="nav-link" href="/pets/yourPets">Your Pets</a>
-                </li>
-              <% } %>
-              <% if (title !== 'Your Adoption Requests') { %>
-                <li class="nav-item">
-                  <a class="nav-link" href="/adoption-requests">Adoption Requests</a>
-                </li>
-              <% } %>
-              <% if (title !== 'Add a New Pet') { %>
-                <li class="nav-item">
-                  <a class="nav-link btn btn-danger" href="/pets/new">Add New Pet</a>
-                </li>
-              <% } %>
-              <% if (title !== 'Logout') { %>
-                <li class="nav-item">
-                  <a class="nav-link" href="/auth/logout">Logout</a>
-                </li>
+              <% if (user.isAdmin) { %>
+                <% if (title !== 'Home Page') { %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                  </li>
+                <% } %>
+                <% if (title !== 'All Users') { %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/users">Users</a>
+                  </li>
+                <% } %>
+                <% if (title !== 'Logout') { %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/auth/logout">Logout</a>
+                  </li>
+                <% } %>
+              <% } else { %>
+                <% if (title !== 'Home Page') { %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                  </li>
+                <% } %>
+                <% if (title !== 'Your Favorites') { %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/favorites">Favorites</a>
+                  </li>
+                <% } %>
+                <% if (title !== 'Your Pets') { %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/pets/yourPets">Your Pets</a>
+                  </li>
+                <% } %>
+                <% if (title !== 'Your Adoption Requests') { %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/adoption-requests">Adoption Requests</a>
+                  </li>
+                <% } %>
+                <% if (title !== 'Add a New Pet') { %>
+                  <li class="nav-item">
+                    <a class="nav-link btn btn-danger" href="/pets/new">Add New Pet</a>
+                  </li>
+                <% } %>
+                <% if (title !== 'Logout') { %>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/auth/logout">Logout</a>
+                  </li>
+                <% } %>
               <% } %>
             <% } %>
           </ul>
