@@ -88,4 +88,56 @@ router.post('/edit', ensureSignedIn, async (req, res) => {
   }
 });
 
+// GET /users/:id/edit - Show form to edit user information (admin only)
+router.get('/:id/edit', ensureSignedIn, async (req, res) => {
+  if (!req.user.isAdmin) {
+    return res.redirect('/');
+  }
+  try {
+    const user = await User.findById(req.params.id);
+    res.render('users/admin-edit', { title: 'Edit User', user, error: null });
+  } catch (err) {
+    console.error(err);
+    res.redirect('/error');
+  }
+});
+
+// POST /users/:id/edit - Update user information (admin only)
+router.post('/:id/edit', ensureSignedIn, async (req, res) => {
+  if (!req.user.isAdmin) {
+    return res.redirect('/');
+  }
+  try {
+    const user = await User.findById(req.params.id);
+    user.name = req.body.name;
+    user.email = req.body.email;
+
+    if (req.body.password) {
+      if (req.body.password !== req.body['confirm-password']) {
+        return res.render('users/admin-edit', {
+          title: 'Edit User',
+          user,
+          error: 'Passwords do not match',
+        });
+      }
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(req.body.password, salt);
+    }
+
+    await user.save();
+    res.redirect('/users');
+  } catch (err) {
+    if (err.code === 11000) {
+      // Duplicate key error
+      return res.render('users/admin-edit', {
+        title: 'Edit User',
+        user,
+        error: 'Email already exists',
+      });
+    }
+    console.error(err);
+    res.redirect('/error');
+  }
+});
+
 module.exports = router;
