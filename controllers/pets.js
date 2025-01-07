@@ -7,6 +7,7 @@ const AdoptionRequest = require('../models/adoptionRequest'); // Import the Adop
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 const multer = require('multer');
 const path = require('path');
+require('dotenv').config(); // Load environment variables
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -88,7 +89,12 @@ router.get('/:id', ensureSignedIn, async (req, res) => {
   if (!pet) {
     return res.redirect('/pets');
   }
-  res.render('pets/show', { title: 'Pet Profile', pet, user: req.user });
+  res.render('pets/show', {
+    title: 'Pet Profile',
+    pet,
+    user: req.user,
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+  });
 });
 
 // POST /pets/:id/adopt - Create an adoption request
