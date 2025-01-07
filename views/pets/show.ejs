@@ -131,6 +131,10 @@
         <% } %>
       </div>
       <% } %>
+      <div class="mt-4">
+        <h2>Location</h2>
+        <div id="map" style="height: 400px; width: 100%;"></div>
+      </div>
     </div>
   </div>
 
@@ -197,4 +201,26 @@
       editCommentForm.style.display = 'none';
     }
   }
+
+  function initMap() {
+    const geocoder = new google.maps.Geocoder();
+    const address = "<%= pet.location %>";
+    console.log('Geocoding address:', address); // Log the address for debugging
+
+    geocoder.geocode({ address: address }, function(results, status) {
+      if (status === 'OK') {
+        const map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: results[0].geometry.location
+        });
+        new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location
+        });
+      } else {
+        console.error('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
 </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaSi3FUZ_QbK77Qc1KsjQZGpvjKD3qypQ&callback=initMap"></script>
