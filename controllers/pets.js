@@ -26,6 +26,7 @@ router.get('/new', ensureSignedIn, (req, res) => {
   res.render('pets/new', {
     title: 'Add a New Pet',
     googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+    errorMessage: null,
   });
 });
 
@@ -47,9 +48,11 @@ router.post(
       const geocodeData = response.data;
 
       if (geocodeData.status !== 'OK') {
-        return res
-          .status(400)
-          .send('Invalid location. Please provide a valid location.');
+        return res.render('pets/new', {
+          title: 'Add a New Pet',
+          googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+          errorMessage: 'Invalid location. Please provide a valid location.',
+        });
       }
 
       const pet = new Pet({
@@ -138,10 +141,12 @@ router.post('/:id/adopt', ensureSignedIn, async (req, res) => {
 // GET /pets/:id/edit - Show form to edit a pet
 router.get('/:id/edit', ensureSignedIn, async (req, res) => {
   const pet = await Pet.findById(req.params.id);
-  if (!pet || (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)) {
-    return res.redirect(`/pets/${req.params.id}`);
-  }
-  res.render('pets/edit', { title: 'Edit Pet', pet });
+  res.render('pets/edit', {
+    title: 'Edit Pet',
+    pet,
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+    errorMessage: null,
+  });
 });
 
 // PUT /pets/:id - Update a pet
@@ -150,14 +155,38 @@ router.put('/:id', ensureSignedIn, async (req, res) => {
   if (!pet || (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin)) {
     return res.redirect(`/pets/${req.params.id}`);
   }
-  pet.name = req.body.name;
-  pet.breed = req.body.breed;
-  pet.type = req.body.type;
-  pet.age = req.body.age;
-  pet.vaccination = req.body.vaccination;
-  pet.location = req.body.location;
-  await pet.save();
-  res.redirect(`/pets/${pet._id}`);
+
+  const location = req.body.location;
+
+  // Validate location using Google Maps Geocoding API
+  const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+    location
+  )}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+  try {
+    const response = await axios.get(geocodeUrl);
+    const geocodeData = response.data;
+
+    if (geocodeData.status !== 'OK') {
+      return res.render('pets/edit', {
+        title: 'Edit Pet',
+        pet,
+        googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+        errorMessage: 'Invalid location. Please provide a valid location.',
+      });
+    }
+
+    pet.name = req.body.name;
+    pet.breed = req.body.breed;
+    pet.type = req.body.type;
+    pet.age = req.body.age;
+    pet.vaccination = req.body.vaccination;
+    pet.location = location;
+    await pet.save();
+    res.redirect(`/pets/${pet._id}`);
+  } catch (error) {
+    console.error('Error validating location:', error);
+    res.status(500).send('An error occurred while validating the location.');
+  }
 });
 
 // POST /pets/:id/story - Add a story to a pet

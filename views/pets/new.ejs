@@ -26,6 +26,9 @@
     <div class="form-group">
       <label for="location">Location:</label>
       <input type="text" class="form-control" id="location" name="location" />
+      <% if (errorMessage) { %>
+      <div class="alert alert-danger mt-2"><%= errorMessage %></div>
+      <% } %>
     </div>
     <div class="form-group">
       <label for="images">Upload Images:</label>

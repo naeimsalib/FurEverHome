@@ -59,9 +59,29 @@
     placeholder="Location"
     value="<%= pet.location %>"
   />
+  <% if (errorMessage) { %>
+  <div class="alert alert-danger mt-2"><%= errorMessage %></div>
+  <% } %>
   <button class="btn btn-lg btn-primary btn-block" type="submit">
     Update Pet
   </button>
 </form>
 
 <%- include('../partials/footer.ejs') %>
+
+<script>
+  function initAutocomplete() {
+    const locationInput = document.getElementById('location');
+    const autocomplete = new google.maps.places.Autocomplete(locationInput, {
+      types: ['geocode'],
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=<%= googleMapsApiKey %>&libraries=places&callback=initAutocomplete`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  });
+</script>
