@@ -17,10 +17,16 @@
         <div class="card-body">
           <h5 class="card-title"><%= request.pet.name %></h5>
           <% if (!request.seenByRequester) { %>
-            <span class="notification-badge">1</span>
+          <span class="notification-badge">1</span>
           <% } %>
-          <p class="card-text"><strong>Status:</strong> <%= request.status %></p>
-          <a href="/adoption-requests/<%= request._id %>" class="btn btn-primary">View Request</a>
+          <p class="card-text">
+            <strong>Status:</strong> <%= request.status %>
+          </p>
+          <a
+            href="/adoption-requests/<%= request._id %>"
+            class="btn btn-primary"
+            >View Request</a
+          >
         </div>
       </div>
     </div>
