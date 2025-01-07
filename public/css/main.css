@@ -254,19 +254,15 @@ button:hover {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  height: 80vh;
+  min-height: calc(100vh - 60px);
 }
 
 .auth-form {
   width: 100%;
   max-width: 400px;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  padding-right: 3.5rem;
-  padding-left: 3.5rem;
+  padding: 2rem;
   border: 1px solid #ddd;
   border-radius: 25px;
-  padding-top: 3rem;
   background-color: #f9f9f9;
 }
 

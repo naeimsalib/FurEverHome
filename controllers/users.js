@@ -6,6 +6,12 @@ const Comment = require('../models/comment');
 const bcrypt = require('bcrypt');
 const ensureSignedIn = require('../middleware/ensure-signed-in');
 
+// Email validation regex
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Password validation regex
+const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/;
+
 // GET /users - List all users (admin only)
 router.get('/', ensureSignedIn, async (req, res) => {
   if (!req.user.isAdmin) {
@@ -55,21 +61,42 @@ router.get('/edit', ensureSignedIn, async (req, res) => {
 
 // POST /users/edit - Update user information
 router.post('/edit', ensureSignedIn, async (req, res) => {
+  const { name, email, password, 'confirm-password': confirmPassword } = req.body;
+
+  // Validate email
+  if (!emailRegex.test(email)) {
+    return res.render('users/edit', {
+      title: 'Edit Profile',
+      user: req.user,
+      error: 'Invalid email format',
+    });
+  }
+
+  // Validate password if provided
+  if (password && !passwordRegex.test(password)) {
+    return res.render('users/edit', {
+      title: 'Edit Profile',
+      user: req.user,
+      error: 'Password must be at least 8 characters long and include an uppercase letter, a number, and a special character',
+    });
+  }
+
+  if (password && password !== confirmPassword) {
+    return res.render('users/edit', {
+      title: 'Edit Profile',
+      user: req.user,
+      error: 'Passwords do not match',
+    });
+  }
+
   try {
     const user = await User.findById(req.user._id);
-    user.name = req.body.name;
-    user.email = req.body.email;
+    user.name = name;
+    user.email = email;
 
-    if (req.body.password) {
-      if (req.body.password !== req.body['confirm-password']) {
-        return res.render('users/edit', {
-          title: 'Edit Profile',
-          user,
-          error: 'Passwords do not match',
-        });
-      }
+    if (password) {
       const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(req.body.password, salt);
+      user.password = await bcrypt.hash(password, salt);
     }
 
     await user.save();
@@ -79,7 +106,7 @@ router.post('/edit', ensureSignedIn, async (req, res) => {
       // Duplicate key error
       return res.render('users/edit', {
         title: 'Edit Profile',
-        user,
+        user: req.user,
         error: 'Email already exists',
       });
     }

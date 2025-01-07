@@ -1,15 +1,17 @@
 <%- include('../partials/header.ejs') %>
 
 <div class="form-container">
-  <% if (error) { %>
-    <div class="alert alert-danger" role="alert">
-      <%= error %>
-    </div>
-  <% } %>
   <form action="/auth/sign-up" method="POST" class="auth-form">
     <div class="form-group">
       <label for="name">Name:</label>
-      <input type="text" name="name" id="name" class="form-control" required />
+      <input
+        type="text"
+        name="name"
+        id="name"
+        class="form-control"
+        value="<%= formData.name || '' %>"
+        required
+      />
     </div>
     <div class="form-group">
       <label for="email">Email:</label>
@@ -18,8 +20,12 @@
         name="email"
         id="email"
         class="form-control"
+        value="<%= formData.email || '' %>"
         required
       />
+      <% if (error && error.includes('email')) { %>
+      <div class="alert alert-danger mt-2"><%= error %></div>
+      <% } %>
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
@@ -36,6 +42,9 @@
         <li id="number" class="invalid">A number</li>
         <li id="special" class="invalid">A special character (!@#$&*)</li>
       </ul>
+      <% if (error && error.includes('Password')) { %>
+      <div class="alert alert-danger mt-2"><%= error %></div>
+      <% } %>
     </div>
     <div class="form-group">
       <label for="confirmPassword">Confirm Password:</label>
@@ -46,6 +55,9 @@
         class="form-control"
         required
       />
+      <% if (error && error.includes('Passwords do not match')) { %>
+      <div class="alert alert-danger mt-2"><%= error %></div>
+      <% } %>
     </div>
     <button type="submit" class="btn btn-primary mt-3">SIGN UP</button>
   </form>
@@ -60,7 +72,7 @@
   const numberRequirement = document.getElementById('number');
   const specialRequirement = document.getElementById('special');
 
-  passwordInput.addEventListener('input', function() {
+  passwordInput.addEventListener('input', function () {
     const value = passwordInput.value;
     lengthRequirement.classList.toggle('valid', value.length >= 8);
     lengthRequirement.classList.toggle('invalid', value.length < 8);
