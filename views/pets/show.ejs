@@ -206,7 +206,6 @@
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
     const geocoder = new google.maps.Geocoder();
     const address = "<%= pet.location %>";
-    console.log('Geocoding address:', address); // Log the address for debugging
 
     geocoder.geocode({ address: address }, function(results, status) {
       if (status === 'OK') {
