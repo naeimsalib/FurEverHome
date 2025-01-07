@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
 const Pet = require('../models/pet');
 const PetStory = require('../models/petStory');
 const Comment = require('../models/comment');
@@ -22,7 +23,10 @@ const upload = multer({ storage });
 
 // GET /pets/new (new functionality) - show form to add a new pet
 router.get('/new', ensureSignedIn, (req, res) => {
-  res.render('pets/new', { title: 'Add a New Pet' });
+  res.render('pets/new', {
+    title: 'Add a New Pet',
+    googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY,
+  });
 });
 
 // POST /pets - Add a new pet
@@ -32,18 +36,38 @@ router.post(
   upload.array('images', 10),
   async (req, res) => {
     const imageUrls = req.files.map((file) => `/uploads/${file.filename}`);
-    const pet = new Pet({
-      name: req.body.name,
-      breed: req.body.breed,
-      type: req.body.type,
-      age: req.body.age,
-      vaccination: req.body.vaccination,
-      imageUrls: imageUrls,
-      location: req.body.location,
-      owner: req.user._id,
-    });
-    await pet.save();
-    res.redirect(`/pets/${pet._id}`);
+    const location = req.body.location;
+
+    // Validate location using Google Maps Geocoding API
+    const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+      location
+    )}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+    try {
+      const response = await axios.get(geocodeUrl);
+      const geocodeData = response.data;
+
+      if (geocodeData.status !== 'OK') {
+        return res
+          .status(400)
+          .send('Invalid location. Please provide a valid location.');
+      }
+
+      const pet = new Pet({
+        name: req.body.name,
+        breed: req.body.breed,
+        type: req.body.type,
+        age: req.body.age,
+        vaccination: req.body.vaccination,
+        imageUrls: imageUrls,
+        location: location,
+        owner: req.user._id,
+      });
+      await pet.save();
+      res.redirect(`/pets/${pet._id}`);
+    } catch (error) {
+      console.error('Error validating location:', error);
+      res.status(500).send('An error occurred while validating the location.');
+    }
   }
 );
 
@@ -55,7 +79,7 @@ router.post(
   async (req, res) => {
     const pet = await Pet.findById(req.params.id);
     if (!pet) {
-      return res.redirect('/pets');
+      return res.redirect('/');
     }
     if (!req.user._id.equals(pet.owner._id) && !req.user.isAdmin) {
       return res.redirect(`/pets/${pet._id}`);
@@ -87,7 +111,7 @@ router.get('/:id', ensureSignedIn, async (req, res) => {
     .populate('story')
     .populate('adoptionRequests'); // Ensure adoption requests are populated
   if (!pet) {
-    return res.redirect('/pets');
+    return res.redirect('/');
   }
   res.render('pets/show', {
     title: 'Pet Profile',
@@ -210,7 +234,7 @@ router.delete('/:id', ensureSignedIn, async (req, res) => {
     // Delete the pet
     await Pet.findByIdAndDelete(req.params.id);
 
-    res.redirect('/pets');
+    res.redirect('/yourPets');
   } catch (err) {
     res.redirect('/error');
   }
