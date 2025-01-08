@@ -76,7 +76,7 @@
   <% } %>
 
   <div class="row">
-    <% pets.slice(0, 12).forEach((pet, index) => { %>
+    <% pets.forEach((pet, index) => { %>
     <div class="col-md-3 mb-4">
       <div class="card h-100">
         <a href="<%= user ? '/pets/' + pet._id : '#' %>">
@@ -95,6 +95,38 @@
     </div>
     <% }) %>
   </div>
+
+  <!-- Pagination Controls -->
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <% if (currentPage > 1) { %>
+      <li class="page-item">
+        <a class="page-link" href="?page=<%= currentPage - 1 %>">Previous</a>
+      </li>
+      <% } %>
+
+      <% for (let i = 1; i <= Math.min(6, totalPages); i++) { %>
+      <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+      </li>
+      <% } %>
+
+      <% if (totalPages > 6) { %>
+      <li class="page-item disabled">
+        <span class="page-link">...</span>
+      </li>
+      <li class="page-item <%= currentPage === totalPages ? 'active' : '' %>">
+        <a class="page-link" href="?page=<%= totalPages %>"><%= totalPages %></a>
+      </li>
+      <% } %>
+
+      <% if (currentPage < totalPages) { %>
+      <li class="page-item">
+        <a class="page-link" href="?page=<%= currentPage + 1 %>">Next</a>
+      </li>
+      <% } %>
+    </ul>
+  </nav>
 </div>
 
 <%- include('./partials/footer.ejs') %>

@@ -104,20 +104,35 @@ app.get('/', async (req, res) => {
     ];
   }
 
+  const page = parseInt(req.query.page) || 1;
+  const limit = 12;
+  const skip = (page - 1) * limit;
+
   let pets;
+  let totalPets;
   if (req.user) {
     // User is logged in, show all pets
-    pets = await Pet.find(query).populate('owner');
+    totalPets = await Pet.countDocuments(query);
+    pets = await Pet.find(query).populate('owner').skip(skip).limit(limit);
   } else {
-    // User is not logged in, show only pets with images and limit to 10 random pets
+    // User is not logged in, show only pets with images and limit to 12 random pets
     const petsWithImages = await Pet.find({
       ...query,
       imageUrls: { $exists: true, $ne: [] },
     }).populate('owner');
+    totalPets = petsWithImages.length;
     pets = petsWithImages.sort(() => 0.5 - Math.random()).slice(0, 12);
   }
 
-  res.render('home.ejs', { title: 'Home Page', pets, user: req.user });
+  const totalPages = Math.ceil(totalPets / limit);
+
+  res.render('home.ejs', {
+    title: 'Home Page',
+    pets,
+    user: req.user,
+    currentPage: page,
+    totalPages,
+  });
 });
 
 // '/auth' is the "starts with" path that the request must match
