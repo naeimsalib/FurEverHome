@@ -263,7 +263,7 @@ router.delete('/:id', ensureSignedIn, async (req, res) => {
     // Delete the pet
     await Pet.findByIdAndDelete(req.params.id);
 
-    res.redirect('/yourPets');
+    res.redirect('/pets/yourPets');
   } catch (err) {
     res.redirect('/error');
   }
