@@ -1,9 +1,16 @@
+/**
+ * This Is a script that adds pets to any user in the database
+ * To add pets just modify how many pets you want to add in the 'limit' variable
+ * Also update the email of the user you want to assign the pets to
+ */
+
 require('dotenv').config();
 const axios = require('axios');
 const mongoose = require('mongoose');
 const Pet = require('./models/pet'); // Import your Pet model
 const User = require('./models/user'); // Import your User model
-
+const petLimits = 5; // Number of pets to add
+const email = 'AdoptYourPet@AnimalShelter.com';
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -31,7 +38,7 @@ async function getAccessToken() {
   return response.data.access_token;
 }
 
-async function fetchPets(accessToken, limit = 5) {
+async function fetchPets(accessToken, limit = petLimits) {
   const response = await axios.get('https://api.petfinder.com/v2/animals', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -63,7 +70,7 @@ async function addPetsToDatabase() {
   const pets = await fetchPets(accessToken);
 
   // Fetch the user to assign as the owner
-  const user = await User.findOne({ email: 'AdoptYourPet@AnimalShelter.com' }); // Replace with Email of User/account to add the pets to
+  const user = await User.findOne({ email }); // Replace with Email of User/account to add the pets to
 
   if (!user) {
     console.error('User not found');
