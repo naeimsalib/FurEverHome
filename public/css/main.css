@@ -353,7 +353,6 @@ button:hover {
   display: block;
 }
 
-/* New CSS for header buttons */
 .navbar-nav .nav-link {
   padding: 0.5rem 1rem;
   border-radius: 5px;
@@ -378,7 +377,7 @@ button:hover {
   color: #ffffff;
 }
 
-/* New CSS for filter box */
+
 .filter-box {
   width: 500px;
   height: auto;
@@ -394,4 +393,36 @@ button:hover {
 .filter-box .form-group:nth-child(2),
 .filter-box .form-group:nth-child(3) {
   grid-column: span 1;
+}
+
+
+.pagination-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.pagination-container nav {
+  background-color: transparent; /* Ensure background is transparent */
+}
+
+.pagination .page-item .page-link {
+  color: #007bff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  margin: 0 2px;
+  transition: color 0.3s;
+}
+
+.pagination .page-item.active .page-link {
+  color: #0056b3;
+  font-weight: bold;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.pagination .page-item .page-link:hover {
+  color: #0056b3;
 }
