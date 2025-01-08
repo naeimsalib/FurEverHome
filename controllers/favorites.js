@@ -6,10 +6,25 @@ const ensureSignedIn = require('../middleware/ensure-signed-in');
 
 // GET /favorites - Show user's favorite pets
 router.get('/', ensureSignedIn, async (req, res) => {
-  const user = await User.findById(req.user._id).populate('favorites');
+  const page = parseInt(req.query.page) || 1;
+  const limit = 12;
+  const skip = (page - 1) * limit;
+
+  const totalPets = await Pet.countDocuments({
+    _id: { $in: req.user.favorites },
+  });
+  const pets = await Pet.find({ _id: { $in: req.user.favorites } })
+    .skip(skip)
+    .limit(limit);
+
+  const totalPages = Math.ceil(totalPets / limit);
+
   res.render('favorites/index', {
-    title: 'Your Favorites',
-    pets: user.favorites,
+    title: 'Favorites',
+    pets,
+    user: req.user,
+    currentPage: page,
+    totalPages,
   });
 });
 

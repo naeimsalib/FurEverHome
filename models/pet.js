@@ -1,16 +1,19 @@
 const mongoose = require('mongoose');
 
 const petSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  breed: { type: String, required: true },
-  type: { type: String, required: true },
-  age: { type: String, required: true }, // Change age to String
-  vaccination: { type: String, required: true },
+  name: String,
+  breed: String,
+  type: String,
+  age: String,
+  vaccination: String,
   imageUrls: [String],
-  location: { type: String, required: true },
+  location: String,
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  adoptionRequests: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'AdoptionRequest' },
+  ],
+  story: { type: mongoose.Schema.Types.ObjectId, ref: 'PetStory' },
 });
 
-const Pet = mongoose.model('Pet', petSchema);
-
-module.exports = Pet;
+module.exports = mongoose.model('Pet', petSchema);

@@ -96,8 +96,22 @@ router.post(
 
 // GET /pets/yourPets (your pets functionality) - show pets created by the logged-in user
 router.get('/yourPets', ensureSignedIn, async (req, res) => {
-  const pets = await Pet.find({ owner: req.user._id }).populate('owner');
-  res.render('pets/yourPets', { title: 'Your Pets', pets });
+  const page = parseInt(req.query.page) || 1;
+  const limit = 12;
+  const skip = (page - 1) * limit;
+
+  const totalPets = await Pet.countDocuments({ owner: req.user._id });
+  const pets = await Pet.find({ owner: req.user._id }).skip(skip).limit(limit);
+
+  const totalPages = Math.ceil(totalPets / limit);
+
+  res.render('pets/yourPets', {
+    title: 'Your Pets',
+    pets,
+    user: req.user,
+    currentPage: page,
+    totalPages,
+  });
 });
 
 // GET /pets/:id (show functionality) - show a single pet's profile

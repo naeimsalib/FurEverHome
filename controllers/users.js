@@ -61,7 +61,12 @@ router.get('/edit', ensureSignedIn, async (req, res) => {
 
 // POST /users/edit - Update user information
 router.post('/edit', ensureSignedIn, async (req, res) => {
-  const { name, email, password, 'confirm-password': confirmPassword } = req.body;
+  const {
+    name,
+    email,
+    password,
+    'confirm-password': confirmPassword,
+  } = req.body;
 
   // Validate email
   if (!emailRegex.test(email)) {
@@ -77,7 +82,8 @@ router.post('/edit', ensureSignedIn, async (req, res) => {
     return res.render('users/edit', {
       title: 'Edit Profile',
       user: req.user,
-      error: 'Password must be at least 8 characters long and include an uppercase letter, a number, and a special character',
+      error:
+        'Password must be at least 8 characters long and include an uppercase letter, a number, and a special character',
     });
   }
 

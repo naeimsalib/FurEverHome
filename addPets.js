@@ -2,6 +2,7 @@
  * This Is a script that adds pets to any user in the database
  * To add pets just modify how many pets you want to add in the 'limit' variable
  * Also update the email of the user you want to assign the pets to
+ * For the users please not the email is case sensitive so make sure to use the correct case
  */
 
 require('dotenv').config();
@@ -9,8 +10,8 @@ const axios = require('axios');
 const mongoose = require('mongoose');
 const Pet = require('./models/pet'); // Import your Pet model
 const User = require('./models/user'); // Import your User model
-const petLimits = 5; // Number of pets to add
-const email = 'AdoptYourPet@AnimalShelter.com';
+const petLimits = 3; // Number of pets to add
+const email = 'naeimsalib@yahoo.com';
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
 
