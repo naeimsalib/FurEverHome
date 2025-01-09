@@ -150,7 +150,8 @@ The `addPets.js` script is used to fetch pets from the Petfinder API and add the
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB, Mongoose
-- **Authentication**: Passport.js
+- **Password Hashing**: bcrypt is used to hash passwords during sign-up
+- **Session Management**: express-session is used to manage user sessions.
 - **APIs**: Petfinder API, Google Maps API
 
 ## Screenshots
