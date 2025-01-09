@@ -8,6 +8,16 @@ FurEverHome is a pet adoption portal designed to connect potential adopters with
 
 Check out the live demo of the app [here](https://fur-ever-home-ae2443c63720.herokuapp.com/).
 
+## Table of Contents
+
+1. [Features](#features)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Adding Pets with `addPets.js`](#adding-pets-with-addpetsjs)
+5. [Technologies Used](#technologies-used)
+6. [Screenshots](#screenshots)
+7. [Contributing](#contributing)
+
 ## Features
 
 ### User Stories
