@@ -1,10 +1,12 @@
-# express-starter-app
-
 # FurEverHome
 
 ## Overview
 
 FurEverHome is a pet adoption portal designed to connect potential adopters with pet owners. The platform allows users to browse pets available for adoption, filter them by type and location, and contact pet owners to inquire about adoption. Pet owners can create and manage profiles for their pets, ensuring a secure and user-friendly experience.
+
+## Demo
+
+Check out the live demo of the app [here](https://fur-ever-home-ae2443c63720.herokuapp.com/).
 
 ## Features
 
@@ -41,45 +43,124 @@ FurEverHome is a pet adoption portal designed to connect potential adopters with
 
 4. **Filtering and Searching**:
 
-   - Visitors and users can search for pets by type (e.g., dog, cat) and/or location.
+   - Visitors and users can search for pets by type (e.g., dog, cat), breed, location, and other criteria.
+   - Advanced filtering options to narrow down search results.
 
-5. **Authorization Middleware**:
+5. **Favorites**:
 
-   - Ensures only the owner of a pet profile can edit or delete it.
+   - Logged-in users can add pets to their favorites list.
+   - Users can view and manage their favorite pets.
 
-6. **User Dashboard**:
+6. **Adoption Requests**:
 
-   - A personalized dashboard where users can:
-     - View their listed pets.
+   - Logged-in users can send adoption requests to pet owners.
+   - Pet owners can view and manage adoption requests for their pets.
 
-7. **Admin Panel**:
-   - Add an admin role for managing inappropriate content or pet profiles.
+7. **Comments**:
+   - Visitors and users can leave comments on pet profiles.
+   - Logged-in users can edit or delete their own comments.
 
-### Icebox Features (Post-MVP Enhancements)
+## Installation
 
-1. **Favorites Feature**:
+1. Clone the repository:
 
-   - Allow users to "favorite" pets they are interested in adopting.
-   - Create a "Favorites" section in the user dashboard.
+   ```bash
+   git clone https://github.com/yourusername/FurEverHome.git
+   cd FurEverHome
+   ```
 
-2. **Enhanced Search and Filters**:
+2. Install dependencies:
 
-   - Add advanced filters like size, age, and vaccination status.
+   ```bash
+   npm install
+   ```
 
-3. **Pet Adoption Stories**:
+3. Set up environment variables:
 
-   - A section where adopters can share their pet adoption stories and images.
-   - Allows users to comment or like stories.
+   - Create a `.env` file in the root directory.
+   - Add the following environment variables:
+     ```
+     MONGODB_URI=your_mongodb_connection_string
+     SESSION_SECRET=your_session_secret
+     GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+     PETFINDER_API_KEY=your_petfinder_api_key
+     PETFINDER_API_SECRET=your_petfinder_api_secret
+     ```
 
-4. **Multiple Images**:
+4. Start the application:
 
-   - Allow pet owners to upload multiple images per pet profile.
+   ```bash
+   npm start
+   ```
 
-5. **Location Integration**:
+5. Alternatively, you can use nodemon for automatic restarts during development:
+   ```bash
+   npm install -g nodemon
+   nodemon
+   ```
 
-   - Integrate Google Maps to show the location of pets on their profiles.
+## Usage
 
-6. **Pet Adoption Workflow**:
-   - Add a "Request Adoption" button on each pet profile.
-   - Logged-in users can submit adoption requests, which will be sent to the pet owner.
-   - Create a dashboard for pet owners to review and manage adoption requests.
+1. **Sign Up**: Create a new account by clicking on the "Sign Up" button on the homepage.
+2. **Login**: Log in to your account using your email and password.
+3. **Create Pet Profile**: Navigate to "Add a New Pet" to create a new pet profile.
+4. **View Pet Profiles**: Browse through the list of available pets on the homepage.
+5. **Edit/Delete Pet Profile**: Edit or delete your own pet profiles from the "Your Pets" section.
+6. **Add to Favorites**: Add pets to your favorites list by clicking the "Add to Favorites" button on the pet profile page.
+7. **Send Adoption Request**: Send an adoption request to the pet owner from the pet profile page.
+8. **Leave Comments**: Leave comments on pet profiles and interact with other users.
+
+## Adding Pets with `addPets.js`
+
+The `addPets.js` script is used to fetch pets from the Petfinder API and add them to your MongoDB database. This script is useful for populating your database with sample pet data for testing and development purposes.
+
+### How it Works
+
+1. **Fetch Access Token**: The script fetches an access token from the Petfinder API using your API key and secret.
+2. **Fetch Pets**: The script uses the access token to fetch a list of pets from the Petfinder API.
+3. **Add Pets to Database**: The script iterates over the fetched pets and adds them to your MongoDB database.
+
+### Running the Script
+
+1. Ensure your `.env` file contains the necessary environment variables:
+
+   ```
+   MONGODB_URI=your_mongodb_connection_string
+   PETFINDER_API_KEY=your_petfinder_api_key
+   PETFINDER_API_SECRET=your_petfinder_api_secret
+   ```
+
+2. Run the script:
+   ```bash
+   node addPets.js
+   ```
+
+## Technologies Used
+
+- **Frontend**: HTML, CSS, JavaScript, Bootstrap
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB, Mongoose
+- **Authentication**: Passport.js
+- **APIs**: Petfinder API, Google Maps API
+
+## Screenshots
+
+### Homepage
+
+![Homepage](public/assets/screenshots/homepage.png)
+
+### Pet Profile
+
+![Pet Profile](public/assets/screenshots/petprofile.png)
+
+### Add a New Pet
+
+![Add a New Pet](public/assets/screenshots/newpet.png)
+
+### Your Pets
+
+![Your Pets](public/assets/screenshots/yourpets.png)
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
