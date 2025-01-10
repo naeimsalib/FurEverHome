@@ -31,6 +31,9 @@ footer {
   color: lightslategray;
 }
 
+footer {
+  margin-top: 10px;
+}
 .carousel-inner img {
   max-height: 400px;
   max-width: 100%;
@@ -150,6 +153,7 @@ select {
 
 form button[type='submit'] {
   grid-column: span 1; /* Ensure button spans the single column */
+  margin-bottom: 15px;
 }
 
 button:hover {
